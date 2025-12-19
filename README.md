@@ -263,6 +263,10 @@ function KYIButton({ accessToken }: { accessToken: string }) {
 - Access tokens are short-lived JWTs. Generate a fresh token for each widget session.
 - The widget uses `postMessage` for secure iframe communication.
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ---
 
 Built with care by [Bluprynt](https://bluprynt.com)
