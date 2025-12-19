@@ -28,10 +28,12 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
-    "dev": "concurrently -k -n build,serve -c blue,green \"tsdown --watch --out-dir playground/dist\" \"npx serve playground -l 3000\"",
+    "dev": "concurrently -k -n build,serve -c blue,green \"tsdown --watch --out-dir docs/dist\" \"npx serve docs -l 3000\"",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
