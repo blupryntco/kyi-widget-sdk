@@ -26,6 +26,8 @@ pnpm add @bluprynt/kyi-widget-sdk
 1. Implement Access Token JWT generation on your backend side.
 1. Use KYI Widget SDK with generated Access Token on behalf of your user.
 
+Use [playground](https://blupryntco.github.io/kyi-widget-sdk) to test KYI Widget SDK.
+
 ## Quick Start
 
 ### 1. Generate Access Token (Server-side)

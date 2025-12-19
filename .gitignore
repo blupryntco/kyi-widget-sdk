@@ -3,7 +3,7 @@ node_modules/
 
 # Build output
 dist/
-playground/dist/
+!docs/dist/
 
 # IDE
 .idea/
