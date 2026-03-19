@@ -28,9 +28,7 @@
       }
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsdown",
     "dev": "concurrently -k -n build,serve -c blue,green \"tsdown --watch --out-dir docs/dist\" \"npx serve docs -l 3000\"",
