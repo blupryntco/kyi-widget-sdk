@@ -28,9 +28,7 @@
       }
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsdown && pnpm run playground:build",
     "playground:build": "tsdown --out-dir docs/dist",
