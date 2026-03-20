@@ -61,7 +61,7 @@ export function injectStyles(): void {
       top: 0;
       right: 0;
       width: 100%;
-      max-width: 480px;
+      max-width: 760px;
       height: 100%;
       background: #fff;
       box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);

@@ -1,6 +1,6 @@
 {
   "name": "@bluprynt/kyi-widget-sdk",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Bluprynt KYI Widget SDK - Embed Know Your Issuer verification into your application",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -28,11 +28,10 @@
       }
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && pnpm run playground:build",
+    "playground:build": "tsdown --out-dir docs/dist",
     "dev": "concurrently -k -n build,serve -c blue,green \"tsdown --watch --out-dir docs/dist\" \"npx serve docs -l 3000\"",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

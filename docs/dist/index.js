@@ -46,7 +46,7 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
       top: 0;
       right: 0;
       width: 100%;
-      max-width: 480px;
+      max-width: 760px;
       height: 100%;
       background: #fff;
       box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
