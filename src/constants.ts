@@ -12,10 +12,10 @@ export const BLUPRYNT_API_URL = 'https://api.bluprynt.com/partner'
  * Scope to URL path mapping
  */
 export const SCOPE_PATHS: Record<string, string> = {
-  kyi: '/kyi',
-  'asset-list': '/assets',
-  'wallet-verification': '/wallet/verify',
-  'wallet-list': '/wallets',
+  kyi: '/widget/kyi',
+  'asset-list': '/widget/assets',
+  'wallet-verification': '/widget/wallet/verify',
+  'wallet-list': '/widget/wallets',
 } as const
 
 /**

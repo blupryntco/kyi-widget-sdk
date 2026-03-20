@@ -1,2 +1,0 @@
-const e=`https://app.bluprynt.com`,t=`https://api.bluprynt.com/partner`,n={kyi:`/kyi`,"asset-list":`/assets`,"wallet-verification":`/wallet/verify`,"wallet-list":`/wallets`},r=`bluprynt-kyi`,i=999999;export{t as BLUPRYNT_API_URL,e as BLUPRYNT_BASE_URL,r as CSS_PREFIX,i as OVERLAY_Z_INDEX,n as SCOPE_PATHS};
-//# sourceMappingURL=constants-DOE8leLV.js.map
