@@ -30,7 +30,8 @@
   },
   "files": ["dist"],
   "scripts": {
-    "build": "tsdown --out-dir docs/dist",
+    "build": "tsdown && pnpm run playground:build",
+    "playground:build": "tsdown --out-dir docs/dist",
     "dev": "concurrently -k -n build,serve -c blue,green \"tsdown --watch --out-dir docs/dist\" \"npx serve docs -l 3000\"",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
