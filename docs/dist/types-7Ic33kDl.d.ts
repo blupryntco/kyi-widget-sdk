@@ -6,7 +6,7 @@ type KYIMode = 'inline' | 'modal' | 'drawer';
 /**
  * Widget scope - determines which page to display
  */
-type KYIScope = 'kyi' | 'asset-list' | 'wallet-verification' | 'wallet-list';
+type KYIScope = 'kyi' | 'asset-list' | 'wallet-list';
 /**
  * Configuration options for the KYI widget
  */
@@ -16,10 +16,6 @@ interface KYIOptions {
    * If not provided for inline mode, appends to document.body
    */
   parentElement?: HTMLElement;
-  /**
-   * Called when the KYI flow is completed successfully
-   */
-  onComplete?: () => void;
   /**
    * Called when the widget is closed (modal/drawer only)
    */
@@ -127,4 +123,4 @@ interface KYIStatus {
  * Internal message types for iframe communication
  */
 export { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget };
-//# sourceMappingURL=types-CLH2Wd7w.d.ts.map
+//# sourceMappingURL=types-7Ic33kDl.d.ts.map

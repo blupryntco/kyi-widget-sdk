@@ -15,7 +15,6 @@ import type { KYIMode, KYIOptions, KYIScope, KYIWidget } from './types'
  * // Inline mode - embed in a specific element
  * const widget = kyi('inline', 'kyi', accessToken, {
  *   parentElement: document.getElementById('kyi-container'),
- *   onComplete: () => console.log('KYI completed'),
  * });
  *
  * // Modal mode - centered overlay

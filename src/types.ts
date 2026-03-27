@@ -19,11 +19,6 @@ export interface KYIOptions {
   parentElement?: HTMLElement
 
   /**
-   * Called when the KYI flow is completed successfully
-   */
-  onComplete?: () => void
-
-  /**
    * Called when the widget is closed (modal/drawer only)
    */
   onClose?: () => void

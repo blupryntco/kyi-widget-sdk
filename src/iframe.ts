@@ -55,9 +55,6 @@ export function setupMessageListener(
       case 'kyi:ready':
         options.onReady?.()
         break
-      case 'kyi:complete':
-        options.onComplete?.()
-        break
       case 'kyi:error':
         options.onError?.(new Error(String(message.payload ?? 'Unknown error')))
         break

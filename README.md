@@ -73,9 +73,6 @@ const { accessToken } = await fetch("/api/kyi-token").then((r) => r.json());
 
 // Embed the widget
 const widget = kyi("modal", "kyi", accessToken, {
-  onComplete: () => {
-    console.log("KYI verification completed!");
-  },
   onClose: () => {
     console.log("Widget closed");
   },
@@ -99,7 +96,6 @@ const container = document.getElementById("kyi-container");
 
 const widget = kyi("inline", "kyi", accessToken, {
   parentElement: container,
-  onComplete: () => console.log("Done!"),
 });
 ```
 
@@ -113,7 +109,6 @@ Displays the widget in a centered modal overlay:
 
 ```typescript
 const widget = kyi("modal", "kyi", accessToken, {
-  onComplete: () => console.log("Done!"),
   onClose: () => console.log("Modal closed"),
 });
 ```
@@ -124,7 +119,6 @@ Displays the widget in a slide-in panel from the right:
 
 ```typescript
 const widget = kyi("drawer", "kyi", accessToken, {
-  onComplete: () => console.log("Done!"),
   onClose: () => console.log("Drawer closed"),
 });
 ```
@@ -186,7 +180,6 @@ Creates a KYI widget instance.
 | Option          | Type                     | Description                            |
 | --------------- | ------------------------ | -------------------------------------- |
 | `parentElement` | `HTMLElement`            | Container element (inline mode only)   |
-| `onComplete`    | `() => void`             | Called when KYI flow completes         |
 | `onClose`       | `() => void`             | Called when widget is closed           |
 | `onError`       | `(error: Error) => void` | Called when an error occurs            |
 | `onReady`       | `() => void`             | Called when widget is loaded and ready |
@@ -239,12 +232,7 @@ function KYIButton({ accessToken }: { accessToken: string }) {
   const widgetRef = useRef<KYIWidget | null>(null);
 
   const openWidget = () => {
-    widgetRef.current = kyi("modal", "kyi", accessToken, {
-      onComplete: () => {
-        console.log("Completed!");
-        widgetRef.current?.destroy();
-      },
-    });
+    widgetRef.current = kyi("modal", "kyi", accessToken);
   };
 
   useEffect(() => {

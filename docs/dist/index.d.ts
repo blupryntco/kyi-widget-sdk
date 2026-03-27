@@ -1,4 +1,4 @@
-import { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-CLH2Wd7w.js";
+import { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-7Ic33kDl.js";
 
 //#region src/widget.d.ts
 /**
@@ -15,7 +15,6 @@ import { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget 
 * // Inline mode - embed in a specific element
 * const widget = kyi('inline', 'kyi', accessToken, {
 *   parentElement: document.getElementById('kyi-container'),
-*   onComplete: () => console.log('KYI completed'),
 * });
 *
 * // Modal mode - centered overlay
@@ -44,7 +43,6 @@ import { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget 
  * // Inline mode - embed in a specific element
  * const widget = kyi('inline', 'kyi', accessToken, {
  *   parentElement: document.getElementById('kyi-container'),
- *   onComplete: () => console.log('KYI completed'),
  * });
  *
  * // Modal mode - centered overlay

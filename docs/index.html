@@ -408,7 +408,6 @@ app.<span class="function">post</span>(<span class="string">'/api/kyi/token'</sp
 
 <span class="keyword">const</span> widget = <span class="function">kyi</span>(<span class="string">'modal'</span>, <span class="string">'kyi'</span>, accessToken, {
   <span class="property">onReady</span>: () => <span class="function">console.log</span>(<span class="string">'Widget ready'</span>),
-  <span class="property">onComplete</span>: () => <span class="function">console.log</span>(<span class="string">'KYI completed'</span>),
   <span class="property">onClose</span>: () => <span class="function">console.log</span>(<span class="string">'Widget closed'</span>),
   <span class="property">onError</span>: (err) => <span class="function">console.error</span>(<span class="string">'Error:'</span>, err),
 });
@@ -542,7 +541,6 @@ widget.<span class="function">destroy</span>();</div>
     function getCallbacks() {
       return {
         onReady: () => log('Widget ready', 'success'),
-        onComplete: () => log('KYI flow completed!', 'success'),
         onClose: () => {
           log('Widget closed');
           currentWidget = null;
@@ -616,7 +614,6 @@ widget.<span class="function">destroy</span>();</div>
 
 <span class="keyword">const</span> widget = <span class="function">kyi</span>(<span class="string">'${mode}'</span>, <span class="string">'${scope}'</span>, accessToken, {${parentElementLine}
   <span class="property">onReady</span>: () => <span class="function">console.log</span>(<span class="string">'Widget ready'</span>),
-  <span class="property">onComplete</span>: () => <span class="function">console.log</span>(<span class="string">'KYI completed'</span>),
   <span class="property">onClose</span>: () => <span class="function">console.log</span>(<span class="string">'Widget closed'</span>),
   <span class="property">onError</span>: (err) => <span class="function">console.error</span>(<span class="string">'Error:'</span>, err),
 });
