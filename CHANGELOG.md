@@ -1,5 +1,11 @@
 # @bluprynt/kyi-widget-sdk
 
+## 0.0.4
+
+### Patch Changes
+
+- 8c753a9: remove onComplete callback
+
 ## 0.0.3
 
 ### Patch Changes
