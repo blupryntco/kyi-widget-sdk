@@ -6,7 +6,7 @@ export type KYIMode = 'inline' | 'modal' | 'drawer'
 /**
  * Widget scope - determines which page to display
  */
-export type KYIScope = 'kyi' | 'asset-list' | 'wallet-verification' | 'wallet-list'
+export type KYIScope = 'kyi' | 'asset-list' | 'wallet-list'
 
 /**
  * Configuration options for the KYI widget

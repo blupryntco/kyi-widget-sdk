@@ -137,7 +137,6 @@ The `scope` parameter determines which page to display:
 | ---------------------- | ------------------------------- |
 | `kyi`                  | New KYI application flow        |
 | `asset-list`           | View list of verified assets    |
-| `wallet-verification`  | Tokenless wallet verification   |
 | `wallet-list`          | View list of connected wallets  |
 
 ```typescript
@@ -146,9 +145,6 @@ kyi("modal", "kyi", accessToken);
 
 // View assets
 kyi("modal", "asset-list", accessToken);
-
-// Verify a wallet
-kyi("drawer", "wallet-verification", accessToken);
 
 // View wallets
 kyi("inline", "wallet-list", accessToken, { parentElement: container });
@@ -181,7 +177,7 @@ Creates a KYI widget instance.
 | Parameter     | Type                               | Description                           |
 | ------------- | ---------------------------------- | ------------------------------------- |
 | `mode`        | `'inline' \| 'modal' \| 'drawer'`  | Widget display mode                   |
-| `scope`       | `'kyi' \| 'asset-list' \| 'wallet-verification' \| 'wallet-list'` | Widget scope       |
+| `scope`       | `'kyi' \| 'asset-list' \| 'wallet-list'` | Widget scope       |
 | `accessToken` | `string`                           | JWT access token from `generateToken` |
 | `options`     | `KYIOptions`                       | Optional configuration                |
 

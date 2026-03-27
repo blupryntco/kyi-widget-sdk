@@ -14,7 +14,6 @@ export const BLUPRYNT_API_URL = 'https://api.bluprynt.com/partner'
 export const SCOPE_PATHS: Record<string, string> = {
   kyi: '/widget/kyi',
   'asset-list': '/widget/assets',
-  'wallet-verification': '/widget/wallet/verify',
   'wallet-list': '/widget/wallets',
 } as const
 
