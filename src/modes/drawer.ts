@@ -43,8 +43,11 @@ export function renderDrawer(
     options.onClose?.()
   }
 
-  // Create close button
+  // Create header with close button
+  const header = document.createElement('div')
+  header.className = `${CSS_PREFIX}-header`
   const closeButton = createCloseButton(close)
+  header.appendChild(closeButton)
 
   // Handle escape key
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -66,7 +69,7 @@ export function renderDrawer(
   const removeListener = setupMessageListener(iframe, options, close)
 
   // Assemble drawer
-  drawer.appendChild(closeButton)
+  drawer.appendChild(header)
   drawer.appendChild(iframe)
 
   // Append to body
