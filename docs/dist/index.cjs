@@ -33,6 +33,8 @@
       overflow: hidden;
       opacity: 0;
       transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${e.CSS_PREFIX}-modal.${e.CSS_PREFIX}-visible {
@@ -53,17 +55,25 @@
       z-index: ${e.OVERLAY_Z_INDEX+1};
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${e.CSS_PREFIX}-drawer.${e.CSS_PREFIX}-visible {
       transform: translateX(0);
     }
 
+    /* Close button header */
+    .${e.CSS_PREFIX}-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
     /* Close button */
     .${e.CSS_PREFIX}-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
       width: 32px;
       height: 32px;
       min-width: 32px;
@@ -75,7 +85,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
       transition: background-color 0.15s ease;
       padding: 0;
       flex-shrink: 0;
@@ -104,7 +113,8 @@
     /* Iframe styles */
     .${e.CSS_PREFIX}-iframe {
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       border: none;
     }
 
@@ -145,5 +155,5 @@
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
-  `,n.addEventListener(`click`,t),n}function s(t,i,s={}){a();let c=document.createElement(`div`);c.className=`${e.CSS_PREFIX}-overlay`;let l=document.createElement(`div`);l.className=`${e.CSS_PREFIX}-modal`,l.setAttribute(`role`,`dialog`),l.setAttribute(`aria-modal`,`true`),l.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=n(t,i),d=()=>{c.classList.remove(`${e.CSS_PREFIX}-visible`),l.classList.remove(`${e.CSS_PREFIX}-visible`),setTimeout(()=>{h(),m(),c.remove(),l.remove()},200),s.onClose?.()},f=o(d),p=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,p);let m=()=>document.removeEventListener(`keydown`,p);c.addEventListener(`click`,d),l.addEventListener(`click`,e=>e.stopPropagation());let h=r(u,s,d);return l.appendChild(f),l.appendChild(u),document.body.appendChild(c),document.body.appendChild(l),requestAnimationFrame(()=>{c.classList.add(`${e.CSS_PREFIX}-visible`),l.classList.add(`${e.CSS_PREFIX}-visible`)}),l.focus(),{iframe:u,destroy:()=>{h(),m(),c.remove(),l.remove()}}}function c(t,i,s={}){a();let c=document.createElement(`div`);c.className=`${e.CSS_PREFIX}-overlay`;let l=document.createElement(`div`);l.className=`${e.CSS_PREFIX}-drawer`,l.setAttribute(`role`,`dialog`),l.setAttribute(`aria-modal`,`true`),l.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=n(t,i),d=()=>{c.classList.remove(`${e.CSS_PREFIX}-visible`),l.classList.remove(`${e.CSS_PREFIX}-visible`),setTimeout(()=>{h(),m(),c.remove(),l.remove()},300),s.onClose?.()},f=o(d),p=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,p);let m=()=>document.removeEventListener(`keydown`,p);c.addEventListener(`click`,d),l.addEventListener(`click`,e=>e.stopPropagation());let h=r(u,s,d);return l.appendChild(f),l.appendChild(u),document.body.appendChild(c),document.body.appendChild(l),requestAnimationFrame(()=>{c.classList.add(`${e.CSS_PREFIX}-visible`),l.classList.add(`${e.CSS_PREFIX}-visible`)}),{iframe:u,destroy:()=>{h(),m(),c.remove(),l.remove()}}}function l(e,t,n,r={}){if(!n)throw Error(`Access token is required`);switch(e){case`inline`:return i(t,n,r);case`modal`:return s(t,n,r);case`drawer`:return c(t,n,r);default:throw Error(`Invalid mode: ${e}. Expected 'inline', 'modal', or 'drawer'.`)}}exports.kyi=l;
+  `,n.addEventListener(`click`,t),n}function s(t,i,s={}){a();let c=document.createElement(`div`);c.className=`${e.CSS_PREFIX}-overlay`;let l=document.createElement(`div`);l.className=`${e.CSS_PREFIX}-modal`,l.setAttribute(`role`,`dialog`),l.setAttribute(`aria-modal`,`true`),l.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=n(t,i),d=()=>{c.classList.remove(`${e.CSS_PREFIX}-visible`),l.classList.remove(`${e.CSS_PREFIX}-visible`),setTimeout(()=>{g(),h(),c.remove(),l.remove()},200),s.onClose?.()},f=document.createElement(`div`);f.className=`${e.CSS_PREFIX}-header`;let p=o(d);f.appendChild(p);let m=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,m);let h=()=>document.removeEventListener(`keydown`,m);c.addEventListener(`click`,d),l.addEventListener(`click`,e=>e.stopPropagation());let g=r(u,s,d);return l.appendChild(f),l.appendChild(u),document.body.appendChild(c),document.body.appendChild(l),requestAnimationFrame(()=>{c.classList.add(`${e.CSS_PREFIX}-visible`),l.classList.add(`${e.CSS_PREFIX}-visible`)}),l.focus(),{iframe:u,destroy:()=>{g(),h(),c.remove(),l.remove()}}}function c(t,i,s={}){a();let c=document.createElement(`div`);c.className=`${e.CSS_PREFIX}-overlay`;let l=document.createElement(`div`);l.className=`${e.CSS_PREFIX}-drawer`,l.setAttribute(`role`,`dialog`),l.setAttribute(`aria-modal`,`true`),l.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=n(t,i),d=()=>{c.classList.remove(`${e.CSS_PREFIX}-visible`),l.classList.remove(`${e.CSS_PREFIX}-visible`),setTimeout(()=>{g(),h(),c.remove(),l.remove()},300),s.onClose?.()},f=document.createElement(`div`);f.className=`${e.CSS_PREFIX}-header`;let p=o(d);f.appendChild(p);let m=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,m);let h=()=>document.removeEventListener(`keydown`,m);c.addEventListener(`click`,d),l.addEventListener(`click`,e=>e.stopPropagation());let g=r(u,s,d);return l.appendChild(f),l.appendChild(u),document.body.appendChild(c),document.body.appendChild(l),requestAnimationFrame(()=>{c.classList.add(`${e.CSS_PREFIX}-visible`),l.classList.add(`${e.CSS_PREFIX}-visible`)}),{iframe:u,destroy:()=>{g(),h(),c.remove(),l.remove()}}}function l(e,t,n,r={}){if(!n)throw Error(`Access token is required`);switch(e){case`inline`:return i(t,n,r);case`modal`:return s(t,n,r);case`drawer`:return c(t,n,r);default:throw Error(`Invalid mode: ${e}. Expected 'inline', 'modal', or 'drawer'.`)}}exports.kyi=l;
 //# sourceMappingURL=index.cjs.map
