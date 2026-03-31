@@ -1,5 +1,11 @@
 # @bluprynt/kyi-widget-sdk
 
+## 0.1.1
+
+### Patch Changes
+
+- d6c8d2b: fix: remove inline mode
+
 ## 0.1.0
 
 ### Minor Changes
