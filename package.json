@@ -1,6 +1,6 @@
 {
   "name": "@bluprynt/kyi-widget-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bluprynt KYI Widget SDK - Embed Know Your Issuer verification into your application",
   "type": "module",
   "main": "./dist/index.cjs",
