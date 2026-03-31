@@ -2,7 +2,7 @@
 /**
  * Widget display modes
  */
-type KYIMode = 'inline' | 'modal' | 'drawer';
+type KYIMode = 'modal' | 'drawer';
 /**
  * Widget scope - determines which page to display
  */
@@ -11,11 +11,6 @@ type KYIScope = 'kyi' | 'asset-list' | 'wallet-list';
  * Configuration options for the KYI widget
  */
 interface KYIOptions {
-  /**
-   * Parent element to render the widget into (only used for inline mode)
-   * If not provided for inline mode, appends to document.body
-   */
-  parentElement?: HTMLElement;
   /**
    * Called when the widget is closed (modal/drawer only)
    */
@@ -123,4 +118,4 @@ interface KYIStatus {
  * Internal message types for iframe communication
  */
 export { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget };
-//# sourceMappingURL=types-7Ic33kDl.d.ts.map
+//# sourceMappingURL=types-Bbuxb5v8.d.ts.map

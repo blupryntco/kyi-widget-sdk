@@ -133,11 +133,7 @@ export function injectStyles(): void {
       border: none;
     }
 
-    .${CSS_PREFIX}-inline {
-      width: 100%;
-      height: 100%;
-      min-height: 400px;
-    }
+
 
     /* Loading state */
     .${CSS_PREFIX}-loading {
