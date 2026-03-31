@@ -1,5 +1,11 @@
 # @bluprynt/kyi-widget-sdk
 
+## 0.1.0
+
+### Minor Changes
+
+- a289d75: fix: close button overflow for modal and drawer
+
 ## 0.0.4
 
 ### Patch Changes
