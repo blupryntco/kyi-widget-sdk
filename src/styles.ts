@@ -48,6 +48,8 @@ export function injectStyles(): void {
       overflow: hidden;
       opacity: 0;
       transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${CSS_PREFIX}-modal.${CSS_PREFIX}-visible {
@@ -68,17 +70,25 @@ export function injectStyles(): void {
       z-index: ${OVERLAY_Z_INDEX + 1};
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${CSS_PREFIX}-drawer.${CSS_PREFIX}-visible {
       transform: translateX(0);
     }
 
+    /* Close button header */
+    .${CSS_PREFIX}-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
     /* Close button */
     .${CSS_PREFIX}-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
       width: 32px;
       height: 32px;
       min-width: 32px;
@@ -90,7 +100,6 @@ export function injectStyles(): void {
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
       transition: background-color 0.15s ease;
       padding: 0;
       flex-shrink: 0;
@@ -119,7 +128,8 @@ export function injectStyles(): void {
     /* Iframe styles */
     .${CSS_PREFIX}-iframe {
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       border: none;
     }
 

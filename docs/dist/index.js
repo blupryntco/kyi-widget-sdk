@@ -33,6 +33,8 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
       overflow: hidden;
       opacity: 0;
       transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${t}-modal.${t}-visible {
@@ -53,17 +55,25 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
       z-index: ${n+1};
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .${t}-drawer.${t}-visible {
       transform: translateX(0);
     }
 
+    /* Close button header */
+    .${t}-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
     /* Close button */
     .${t}-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
       width: 32px;
       height: 32px;
       min-width: 32px;
@@ -75,7 +85,6 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
       transition: background-color 0.15s ease;
       padding: 0;
       flex-shrink: 0;
@@ -104,7 +113,8 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
     /* Iframe styles */
     .${t}-iframe {
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       border: none;
     }
 
@@ -145,5 +155,5 @@ import{BLUPRYNT_BASE_URL as e,CSS_PREFIX as t,OVERLAY_Z_INDEX as n,SCOPE_PATHS a
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
-  `,n.addEventListener(`click`,e),n}function u(e,n,r={}){c();let i=document.createElement(`div`);i.className=`${t}-overlay`;let s=document.createElement(`div`);s.className=`${t}-modal`,s.setAttribute(`role`,`dialog`),s.setAttribute(`aria-modal`,`true`),s.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=a(e,n),d=()=>{i.classList.remove(`${t}-visible`),s.classList.remove(`${t}-visible`),setTimeout(()=>{h(),m(),i.remove(),s.remove()},200),r.onClose?.()},f=l(d),p=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,p);let m=()=>document.removeEventListener(`keydown`,p);i.addEventListener(`click`,d),s.addEventListener(`click`,e=>e.stopPropagation());let h=o(u,r,d);return s.appendChild(f),s.appendChild(u),document.body.appendChild(i),document.body.appendChild(s),requestAnimationFrame(()=>{i.classList.add(`${t}-visible`),s.classList.add(`${t}-visible`)}),s.focus(),{iframe:u,destroy:()=>{h(),m(),i.remove(),s.remove()}}}function d(e,n,r={}){c();let i=document.createElement(`div`);i.className=`${t}-overlay`;let s=document.createElement(`div`);s.className=`${t}-drawer`,s.setAttribute(`role`,`dialog`),s.setAttribute(`aria-modal`,`true`),s.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=a(e,n),d=()=>{i.classList.remove(`${t}-visible`),s.classList.remove(`${t}-visible`),setTimeout(()=>{h(),m(),i.remove(),s.remove()},300),r.onClose?.()},f=l(d),p=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,p);let m=()=>document.removeEventListener(`keydown`,p);i.addEventListener(`click`,d),s.addEventListener(`click`,e=>e.stopPropagation());let h=o(u,r,d);return s.appendChild(f),s.appendChild(u),document.body.appendChild(i),document.body.appendChild(s),requestAnimationFrame(()=>{i.classList.add(`${t}-visible`),s.classList.add(`${t}-visible`)}),{iframe:u,destroy:()=>{h(),m(),i.remove(),s.remove()}}}function f(e,t,n,r={}){if(!n)throw Error(`Access token is required`);switch(e){case`inline`:return s(t,n,r);case`modal`:return u(t,n,r);case`drawer`:return d(t,n,r);default:throw Error(`Invalid mode: ${e}. Expected 'inline', 'modal', or 'drawer'.`)}}export{f as kyi};
+  `,n.addEventListener(`click`,e),n}function u(e,n,r={}){c();let i=document.createElement(`div`);i.className=`${t}-overlay`;let s=document.createElement(`div`);s.className=`${t}-modal`,s.setAttribute(`role`,`dialog`),s.setAttribute(`aria-modal`,`true`),s.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=a(e,n),d=()=>{i.classList.remove(`${t}-visible`),s.classList.remove(`${t}-visible`),setTimeout(()=>{g(),h(),i.remove(),s.remove()},200),r.onClose?.()},f=document.createElement(`div`);f.className=`${t}-header`;let p=l(d);f.appendChild(p);let m=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,m);let h=()=>document.removeEventListener(`keydown`,m);i.addEventListener(`click`,d),s.addEventListener(`click`,e=>e.stopPropagation());let g=o(u,r,d);return s.appendChild(f),s.appendChild(u),document.body.appendChild(i),document.body.appendChild(s),requestAnimationFrame(()=>{i.classList.add(`${t}-visible`),s.classList.add(`${t}-visible`)}),s.focus(),{iframe:u,destroy:()=>{g(),h(),i.remove(),s.remove()}}}function d(e,n,r={}){c();let i=document.createElement(`div`);i.className=`${t}-overlay`;let s=document.createElement(`div`);s.className=`${t}-drawer`,s.setAttribute(`role`,`dialog`),s.setAttribute(`aria-modal`,`true`),s.setAttribute(`aria-label`,`Bluprynt KYI Widget`);let u=a(e,n),d=()=>{i.classList.remove(`${t}-visible`),s.classList.remove(`${t}-visible`),setTimeout(()=>{g(),h(),i.remove(),s.remove()},300),r.onClose?.()},f=document.createElement(`div`);f.className=`${t}-header`;let p=l(d);f.appendChild(p);let m=e=>{e.key===`Escape`&&d()};document.addEventListener(`keydown`,m);let h=()=>document.removeEventListener(`keydown`,m);i.addEventListener(`click`,d),s.addEventListener(`click`,e=>e.stopPropagation());let g=o(u,r,d);return s.appendChild(f),s.appendChild(u),document.body.appendChild(i),document.body.appendChild(s),requestAnimationFrame(()=>{i.classList.add(`${t}-visible`),s.classList.add(`${t}-visible`)}),{iframe:u,destroy:()=>{g(),h(),i.remove(),s.remove()}}}function f(e,t,n,r={}){if(!n)throw Error(`Access token is required`);switch(e){case`inline`:return s(t,n,r);case`modal`:return u(t,n,r);case`drawer`:return d(t,n,r);default:throw Error(`Invalid mode: ${e}. Expected 'inline', 'modal', or 'drawer'.`)}}export{f as kyi};
 //# sourceMappingURL=index.js.map
