@@ -1,0 +1,47 @@
+# Per-repo configuration for Bluprynt Engineering Standards.
+# Schema: blupryntco/engineering-standards/templates/bluprynt-standards.yml
+
+# ---- Gate: linear-pr -------------------------------------------------------
+
+# This repo's issues are tracked under the Bluprynt Engineering team (key BLU).
+# Keep ENG in the list to remain compatible with cross-team issues.
+allowedTeams: [BLU, ENG]
+
+# Start lenient: any non-null assignee passes. Flip to true once GitHub
+# logins are reliably mapped to Linear display names / emails for this team.
+requireAuthorIsAssignee: false
+
+# ---- Gate: docs-currency ---------------------------------------------------
+
+docs:
+  paths:
+    - docs/**
+    - README.md
+    - "**/*.md"
+  adrPaths:
+    - docs/adr/**
+
+# ---- Gate: branch-protection (Gate 3) -------------------------------------
+
+# Single-trunk repo: `main` is the only deploy/CI branch.
+branchProtection:
+  branches:
+    - main
+  requiredApprovals: 1
+  requiredStatusChecks:
+    - Bluprynt Engineering Standards
+    - CI
+
+# ---- Gate: diff-coverage (Gate 4) -----------------------------------------
+
+# Layer B is OPT-IN. Leave `diff_threshold` unset for the initial rollout.
+coverage: {}
+
+# ---- Gate: security-tier-declared -----------------------------------------
+
+# Tier 0 = baseline (every repo). kyi-widget-sdk is a published TS/JS SDK
+# package (not a deployed service and not on-chain), so tier 0 is the
+# correct classification. Bump to tier 1 only if/when it acquires
+# production-service infrastructure (container/IaC/etc.).
+security:
+  tier: 0

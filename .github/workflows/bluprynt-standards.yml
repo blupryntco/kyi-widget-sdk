@@ -1,0 +1,39 @@
+# Bluprynt Engineering Standards orchestrator stub.
+# Source of truth: blupryntco/engineering-standards/templates/consumer-stub.yml
+# Do not modify locally — bump `@v1` only when coordinating with the
+# standards repo owner. The `branches:` list reflects this repo's trunk
+# (`main` is the only deploy/CI trunk per ci.yml + publish.yml).
+
+name: Bluprynt Engineering Standards
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+# Permissions required by the gates this stub orchestrates:
+#   contents: read         — checkout
+#   pull-requests: write   — Gate 2 advisory comment
+#   issues: write          — PR comments use the issues endpoint
+#
+# Note: Gate 3 (branch-protection audit) needs admin-read access. That
+# is NOT a workflow permission scope — GitHub does not expose it on the
+# default GITHUB_TOKEN. To enable Gate 3's runtime audit, configure an
+# org or repo secret `BRANCH_PROTECTION_AUDIT_TOKEN` with a PAT or App
+# token that has `Administration: read`. When the secret is absent, Gate 3
+# warn-skips the API audit.
+#
+# Optional but recommended: `BLUPRYNT_CLAUDE_READ_TOKEN` — PAT or App
+# token with `Contents: read` on `blupryntco/bluprynt-claude`. When
+# present, the docs-currency advisory gate pulls the canonical Claude
+# discipline layer at runtime so prompts and policies align with the org
+# standard. When absent, the gate falls back to its inline prompt.
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  standards:
+    uses: blupryntco/engineering-standards/.github/workflows/standards.yml@v1
+    secrets: inherit

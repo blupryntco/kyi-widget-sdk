@@ -1,0 +1,33 @@
+# Bluprynt mutation test gate — per-repo caller.
+# Reusable workflow lives in `blupryntco/engineering-standards`; bump `@v1`
+# only when coordinating with the standards repo owner.
+# Source: blupryntco/engineering-standards/docs/example-consumer-workflow.yml
+#
+# Required secrets:
+#   * GITHUB_TOKEN — supplied automatically by GitHub Actions.
+#   * ORG_READ_TOKEN — needed while `engineering-standards` is private; a
+#     PAT / App token with `Contents: read` on that repo.
+#
+# TS/JS SDK package. No jest/vitest/mocha is configured yet, so the
+# TS adapter will emit a vacuous pass until a runner is added.
+
+name: Mutation test gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  mutation-gate:
+    name: Mutation test gate
+    if: github.event.pull_request.draft == false
+    uses: blupryntco/engineering-standards/.github/workflows/mutation-gate.yml@v1
+    with:
+      threshold: 75
+    secrets:
+      ORG_READ_TOKEN: ${{ secrets.ORG_READ_TOKEN }}
