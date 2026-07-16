@@ -22,8 +22,11 @@ if (!/minimumReleaseAge:/.test(read('pnpm-workspace.yaml'))) fail('minimumReleas
 if (!/"onlyBuiltDependencies"/.test(read('package.json')))
   fail('pnpm.onlyBuiltDependencies allow-list missing')
 
-// 5. audit step present
-if (!/pnpm audit/.test(ci)) fail('no pnpm audit step in ci.yml')
+// 5. vulnerability monitoring via Dependabot (npm ecosystem)
+const dependabot = read('.github/dependabot.yml')
+if (!dependabot) fail('.github/dependabot.yml missing')
+else if (!/package-ecosystem:\s*["']?npm["']?/.test(dependabot))
+  fail('.github/dependabot.yml has no npm package-ecosystem entry')
 
 // 6. third-party actions SHA-pinned (actions/* may stay on tags)
 for (const [, ref] of ci.matchAll(/uses:\s*([^\s#]+)/g)) {
