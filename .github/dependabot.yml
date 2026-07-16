@@ -1,0 +1,13 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14 # supply-chain cooldown (control 4) — replaces pnpm minimumReleaseAge
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
