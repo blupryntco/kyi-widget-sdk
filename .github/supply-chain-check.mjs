@@ -15,10 +15,11 @@ if (!existsSync('pnpm-lock.yaml')) fail('pnpm-lock.yaml missing')
 const ci = read('.github/workflows/ci.yml')
 if (!/pnpm install --frozen-lockfile/.test(ci)) fail('ci.yml install is not frozen')
 
-// 3. cooldown in workspace file
-if (!/minimumReleaseAge:/.test(read('pnpm-workspace.yaml'))) fail('minimumReleaseAge not set')
+// 3. dependency cooldown via Dependabot
+if (!/cooldown/.test(read('.github/dependabot.yml')))
+  fail('no cooldown configured in .github/dependabot.yml')
 
-// 4. script allow-list in package.json
+// 4. script allow-list in package.json (pnpm.onlyBuiltDependencies)
 if (!/"onlyBuiltDependencies"/.test(read('package.json')))
   fail('pnpm.onlyBuiltDependencies allow-list missing')
 
