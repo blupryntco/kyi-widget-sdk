@@ -1,0 +1,8 @@
+# pnpm-workspace.yaml
+minimumReleaseAge: 20160 # 14 days, in minutes — supply-chain cooldown (BLU-2699)
+
+# Deny-all dependency build scripts (control #3). pnpm 10.16+ reads this setting
+# here (the "pnpm" field in package.json is no longer honored); the package.json
+# copy is kept only to satisfy the static supply-chain check. Widen only if a
+# dependency legitimately needs a build script.
+onlyBuiltDependencies: []
