@@ -24,6 +24,27 @@
       <h1>Overview</h1>
       <p class="lead">The KYI (Know Your Issuer) widget lets token issuers on your platform verify their assets with Bluprynt, without leaving your product.</p>
 
+      <section class="tldr" aria-labelledby="tldr">
+        <h2 id="tldr">TL;DR</h2>
+        <p>Contact your Bluprynt representative to set up a partner integration.</p>
+        <div class="tldr-cols">
+          <div>
+            <h3>You send Bluprynt</h3>
+            <ul>
+              <li>Every origin that will embed the widget, including staging and local development (e.g. <code>https://app.example.com</code>, <code>http://localhost:3000</code>).</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Bluprynt sends you</h3>
+            <ul>
+              <li><strong>Partner ID</strong>, the <code>issuer</code> in your tokens.</li>
+              <li><strong><code>SECRET_KEY</code></strong>, for signing tokens on your server.</li>
+            </ul>
+          </div>
+        </div>
+        <p>Then: <code>npm install @bluprynt/kyi-widget-sdk</code>, generate a token for the logged-in user on your backend, and call <code>kyi()</code> on your frontend. <a href="integration.html">Integration guide →</a></p>
+      </section>
+
       <h2 id="what">What it does</h2>
       <p>Inside the widget, a token issuer verifies their asset like this:</p>
       <ol class="flow">
@@ -42,7 +63,7 @@
 
       <h2 id="how">How the pieces fit together</h2>
       <ol class="flow">
-        <li>Bluprynt gives you a partner ID (the <em>issuer</em> claim) and a <code>SECRET_KEY</code>.</li>
+        <li>You tell Bluprynt which origins will embed the widget. Bluprynt allowlists them and gives you a partner ID (the <em>issuer</em> claim) and a <code>SECRET_KEY</code>.</li>
         <li>An issuer logs in to your platform as usual.</li>
         <li>Your backend generates a short-lived access token for that issuer, signed with your <code>SECRET_KEY</code>.</li>
         <li>Your frontend calls <code>kyi()</code> with the token, and the widget opens.</li>

@@ -22,7 +22,7 @@ pnpm add @bluprynt/kyi-widget-sdk
 
 ## How KYI Widget SDK works
 
-1. Ask Bluprynt for `SECRET_KEY` as part of partner integration.
+1. Ask Bluprynt for `SECRET_KEY` as part of partner integration, and send the list of origins where you'll embed the widget (including staging and local development) so they can be allowlisted.
 1. Implement Access Token JWT generation on your backend side.
 1. Use KYI Widget SDK with generated Access Token on behalf of your user.
 

@@ -30,6 +30,13 @@
         <li><strong>Partner ID</strong>, used as the token's <code>issuer</code>.</li>
         <li><strong><code>SECRET_KEY</code></strong>, used to sign access tokens. Store it like any other server secret, for example in an environment variable, and never ship it to the browser.</li>
       </ul>
+      <p>Bluprynt also needs from you:</p>
+      <ul>
+        <li><strong>The origins where you'll embed the widget</strong>, for example <code>https://app.example.com</code> and <code>https://staging.example.com</code>. Include every environment you test in, including local development such as <code>http://localhost:3000</code>. Bluprynt adds these to its CSP and CORS policies.</li>
+      </ul>
+      <div class="callout">
+        The widget only loads on allowlisted origins. On any other origin the browser blocks it, and you'll see an empty frame or a CSP error in the console. If that happens, check that the exact origin (scheme, host and port) is on your list.
+      </div>
 
       <h2 id="install">2. Install the SDK</h2>
 <pre><code>npm install @bluprynt/kyi-widget-sdk</code></pre>
@@ -144,6 +151,7 @@ export function VerifyButton() {
       <h2 id="security">Security checklist</h2>
       <ul>
         <li>Your <code>SECRET_KEY</code> lives only on your server.</li>
+        <li>Every origin that embeds the widget is on your allowlist with Bluprynt.</li>
         <li>Your token endpoint requires login and takes the user ID from the session.</li>
         <li>User IDs are stable, unique and never reused.</li>
         <li>Tokens are short-lived and generated fresh for each widget session.</li>
