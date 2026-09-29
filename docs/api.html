@@ -43,7 +43,7 @@
         <thead><tr><th>Option</th><th>Type</th><th>Called when</th></tr></thead>
         <tbody>
           <tr><td><code>onReady</code></td><td><code>() =&gt; void</code></td><td>The widget has loaded.</td></tr>
-          <tr><td><code>onClose</code></td><td><code>() =&gt; void</code></td><td>The widget is closed by the issuer or by the widget itself.</td></tr>
+          <tr><td><code>onClose</code></td><td><code>() =&gt; void</code></td><td>The user closes the widget, or the widget closes itself.</td></tr>
           <tr><td><code>onError</code></td><td><code>(error: Error) =&gt; void</code></td><td>The widget reports an error.</td></tr>
         </tbody>
       </table>
@@ -63,9 +63,9 @@
       <table>
         <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>issuer</code></td><td><code>string</code></td><td>Your partner ID. Becomes the <code>iss</code> claim.</td></tr>
+          <tr><td><code>issuer</code></td><td><code>string</code></td><td>Your partner ID. Becomes the <code>iss</code> claim. (JWT naming: this is your platform, not the user.)</td></tr>
           <tr><td><code>secretKey</code></td><td><code>string</code></td><td>Your <code>SECRET_KEY</code>.</td></tr>
-          <tr><td><code>userId</code></td><td><code>string</code></td><td>Your internal ID for the issuer. Becomes the <code>sub</code> claim. See <a href="integration.html#user-id">Choosing a user ID</a>.</td></tr>
+          <tr><td><code>userId</code></td><td><code>string</code></td><td>Your internal ID for the user. Becomes the <code>sub</code> claim. See <a href="integration.html#user-id">Choosing a user ID</a>.</td></tr>
           <tr><td><code>expiresIn</code></td><td><code>number</code></td><td>Lifetime in seconds. Defaults to <code>3600</code>.</td></tr>
         </tbody>
       </table>

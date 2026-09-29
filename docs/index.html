@@ -37,39 +37,38 @@
           <div>
             <h3>Bluprynt sends you</h3>
             <ul>
-              <li><strong>Partner ID</strong>, the <code>issuer</code> in your tokens.</li>
-              <li><strong><code>SECRET_KEY</code></strong>, for signing tokens on your server.</li>
+              <li>A <strong>partner ID</strong> that identifies your platform.</li>
+              <li>A <strong><code>SECRET_KEY</code></strong> for signing access tokens on your server.</li>
             </ul>
           </div>
         </div>
-        <p>Then: <code>npm install @bluprynt/kyi-widget-sdk</code>, generate a token for the logged-in user on your backend, and call <code>kyi()</code> on your frontend. <a href="integration.html">Integration guide →</a></p>
+        <p>After that, install <code>@bluprynt/kyi-widget-sdk</code>, generate an access token for the logged-in user on your backend, and pass it to <code>kyi()</code> on your frontend. The <a href="integration.html">integration guide</a> walks through each step.</p>
       </section>
 
       <h2 id="what">What it does</h2>
-      <p>Inside the widget, a token issuer verifies their asset like this:</p>
+      <p>A token issuer verifies their asset in three steps, all inside the widget:</p>
       <ol class="flow">
-        <li><strong>KYB.</strong> The issuer completes a Know Your Business check.</li>
-        <li><strong>Wallet verification.</strong> The issuer proves control of the wallets behind the asset.</li>
-        <li><strong>On-chain identity.</strong> Bluprynt creates an on-chain identity for the issuer, which is then subject to ongoing compliance checks.</li>
+        <li>They complete a KYB (Know Your Business) check.</li>
+        <li>They verify the wallets behind the asset.</li>
+        <li>Bluprynt creates an on-chain identity for them, which is then subject to ongoing compliance checks.</li>
       </ol>
-      <p>The SDK is a small JavaScript library that opens this flow as a modal or a drawer on top of your page. Issuers can also use it to view the assets and wallets they have already verified.</p>
+      <p>The widget also lets issuers look back at the assets and wallets they've already verified. The SDK itself is a small JavaScript library that opens the widget as a modal or a drawer over your page.</p>
 
       <h2 id="identity">How identity works</h2>
-      <p>Your issuers never sign up for Bluprynt. They don't create an account, log in, or authenticate a second time. Your platform has already authenticated them, and a signed access token carries that identity into the widget. From the issuer's point of view, verification is simply part of your product.</p>
-      <p>The access token contains <strong>your</strong> internal user ID for the issuer. Bluprynt trusts that ID completely: whatever user ID you put in a token is treated as that issuer, along with their KYB results, verified wallets and on-chain identity.</p>
+      <p>Your users never sign up for Bluprynt. There's no Bluprynt account, no second login, nothing extra to authenticate. You've already logged them in, and a signed access token carries that identity into the widget, so to them verification feels like part of your product.</p>
+      <p>The token contains your own internal ID for the user, and Bluprynt takes it at face value. Whatever ID you put in a token, Bluprynt treats as that user, along with their KYB results, verified wallets and on-chain identity.</p>
       <div class="callout">
-        This means managing user IDs is your responsibility. Each issuer must always get the same ID, no two issuers may share one, and your server must only ever generate a token for the user who is currently logged in. See <a href="integration.html#user-id">Choosing a user ID</a>.
+        So keeping user IDs straight is on you: one permanent ID per user, never shared or reused, and tokens only for whoever is logged in. The integration guide covers this in <a href="integration.html#user-id">Choosing a user ID</a>.
       </div>
 
-      <h2 id="how">How the pieces fit together</h2>
+      <h2 id="how">What happens at runtime</h2>
       <ol class="flow">
-        <li>You tell Bluprynt which origins will embed the widget. Bluprynt allowlists them and gives you a partner ID (the <em>issuer</em> claim) and a <code>SECRET_KEY</code>.</li>
-        <li>An issuer logs in to your platform as usual.</li>
-        <li>Your backend generates a short-lived access token for that issuer, signed with your <code>SECRET_KEY</code>.</li>
-        <li>Your frontend calls <code>kyi()</code> with the token, and the widget opens.</li>
-        <li>The issuer completes verification inside the widget. Bluprynt links the result to your user ID.</li>
+        <li>A user logs in to your platform as usual.</li>
+        <li>Your backend generates a short-lived access token for them, signed with your <code>SECRET_KEY</code>.</li>
+        <li>Your frontend passes the token to <code>kyi()</code>, and the widget opens.</li>
+        <li>The user goes through verification. Bluprynt stores the result against your ID for them.</li>
       </ol>
-      <p>Your <code>SECRET_KEY</code> stays on your server. The browser only ever sees the short-lived token.</p>
+      <p>The <code>SECRET_KEY</code> never leaves your server. The browser only sees the short-lived token.</p>
 
       <h2 id="next">Next steps</h2>
       <div class="cards">

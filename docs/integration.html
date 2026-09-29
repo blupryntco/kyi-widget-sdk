@@ -24,18 +24,15 @@
       <h1>Integration guide</h1>
       <p class="lead">Add the KYI widget to your platform: one endpoint on your backend and one function call on your frontend.</p>
 
-      <h2 id="credentials">1. Get your credentials</h2>
-      <p>Contact your Bluprynt representative to set up a partner integration. You will receive:</p>
+      <h2 id="credentials">1. Set up with Bluprynt</h2>
+      <p>Contact your Bluprynt representative and send them every origin where the widget will be embedded, for example <code>https://app.example.com</code>, <code>https://staging.example.com</code> and <code>http://localhost:3000</code>. Bluprynt adds them to its CSP and CORS policies. The widget won't load anywhere else.</p>
+      <p>In return you get:</p>
       <ul>
-        <li><strong>Partner ID</strong>, used as the token's <code>issuer</code>.</li>
-        <li><strong><code>SECRET_KEY</code></strong>, used to sign access tokens. Store it like any other server secret, for example in an environment variable, and never ship it to the browser.</li>
-      </ul>
-      <p>Bluprynt also needs from you:</p>
-      <ul>
-        <li><strong>The origins where you'll embed the widget</strong>, for example <code>https://app.example.com</code> and <code>https://staging.example.com</code>. Include every environment you test in, including local development such as <code>http://localhost:3000</code>. Bluprynt adds these to its CSP and CORS policies.</li>
+        <li>A <strong>partner ID</strong> that identifies your platform.</li>
+        <li>A <strong><code>SECRET_KEY</code></strong> for signing access tokens. Treat it like any other server secret: keep it in an environment variable or secret store, and never send it to the browser.</li>
       </ul>
       <div class="callout">
-        The widget only loads on allowlisted origins. On any other origin the browser blocks it, and you'll see an empty frame or a CSP error in the console. If that happens, check that the exact origin (scheme, host and port) is on your list.
+        Widget shows an empty frame, or the console has a CSP error? The page's origin probably isn't on the allowlist. Scheme, host and port all have to match exactly, so <code>http://localhost:3000</code> and <code>http://localhost:5173</code> are different origins.
       </div>
 
       <h2 id="install">2. Install the SDK</h2>
@@ -47,7 +44,7 @@
       </ul>
 
       <h2 id="token">3. Generate an access token on your backend</h2>
-      <p>Add an endpoint that your frontend calls before opening the widget. It generates a short-lived token for the logged-in issuer.</p>
+      <p>Add an endpoint that your frontend calls before opening the widget. It returns a short-lived token for the logged-in user.</p>
 <pre><code>import { generateToken } from '@bluprynt/kyi-widget-sdk/server'
 
 app.post('/api/kyi/token', requireLogin, async (req, res) => {
@@ -60,24 +57,25 @@ app.post('/api/kyi/token', requireLogin, async (req, res) => {
 
   res.json({ accessToken })
 })</code></pre>
+      <p>A note on naming: <code>issuer</code> here is the standard JWT term for whoever signs the token, which is your platform. Put your partner ID in it. It has nothing to do with the token issuers who use the widget.</p>
 
       <h3 id="user-id">Choosing a user ID</h3>
-      <p>The <code>userId</code> is the only thing that identifies an issuer to Bluprynt, and Bluprynt trusts it as-is. Everything the issuer does in the widget (KYB, verified wallets, their on-chain identity) is attached to it. The ID you use must be:</p>
+      <p>Bluprynt identifies a user by <code>userId</code> alone and doesn't check it. Their KYB results, verified wallets and on-chain identity are all stored against it. Pick an ID that is:</p>
       <ul>
-        <li><strong>Stable.</strong> The same issuer always gets the same ID. Don't use an email address or username that can change.</li>
-        <li><strong>Unique and never reused.</strong> One ID per issuer. Don't give a deleted account's ID to a new user, and don't share one ID between issuers.</li>
-        <li><strong>Internal.</strong> Use your database's primary key or a similar ID that users can't choose or edit.</li>
+        <li><strong>Stable.</strong> The same user always gets the same ID. Email addresses and usernames change, so don't use them.</li>
+        <li><strong>Unique and never reused.</strong> Each user has their own ID. Don't hand a deleted account's ID to someone new.</li>
+        <li><strong>Internal.</strong> Your database's primary key is usually right. Users shouldn't be able to choose or edit it.</li>
       </ul>
       <div class="callout">
         <strong>Take the user ID from your authenticated session, never from the request.</strong>
-        If your token endpoint accepted something like <code>req.body.userId</code>, anyone could request a valid token for another issuer and open their verification. Bluprynt can't detect this because the token would be correctly signed.
+        If your endpoint read something like <code>req.body.userId</code>, anyone could ask for a token for someone else and open that person's verification. Bluprynt can't catch this, because the token is correctly signed.
       </div>
 
       <h3 id="other-platforms">Not using Node.js?</h3>
       <p>Generate the JWT with any library for your language. Sign it with <strong>HS256</strong> using your <code>SECRET_KEY</code>, and include these claims:</p>
 <pre><code>{
   "sub": "user-123",          // your internal user ID
-  "iss": "your-partner-id",   // your partner ID
+  "iss": "your-partner-id",   // your partner ID (see the naming note above)
   "iat": 1766146154,          // issued at (Unix seconds)
   "exp": 1766149754           // expires at (Unix seconds)
 }</code></pre>
@@ -112,7 +110,7 @@ const widget = kyi('modal', 'kyi', accessToken, {
           <tr><td><code>drawer</code></td><td>A panel that slides in from the right.</td></tr>
         </tbody>
       </table>
-      <p>In both modes the widget closes when the issuer clicks the close button, clicks outside it, or presses Escape.</p>
+      <p>In both modes the widget closes when the user clicks the close button, clicks outside it, or presses Escape.</p>
 
       <h3 id="scopes">Scopes</h3>
       <p>The scope decides which screen the widget opens on.</p>
@@ -120,13 +118,13 @@ const widget = kyi('modal', 'kyi', accessToken, {
         <thead><tr><th>Scope</th><th>Opens</th><th>Use it for</th></tr></thead>
         <tbody>
           <tr><td><code>kyi</code></td><td>The verification flow</td><td>Starting or continuing KYB and wallet verification.</td></tr>
-          <tr><td><code>asset-list</code></td><td>The issuer's assets</td><td>Letting issuers review what they've verified.</td></tr>
-          <tr><td><code>wallet-list</code></td><td>The issuer's wallets</td><td>Letting issuers review their verified wallets.</td></tr>
+          <tr><td><code>asset-list</code></td><td>The user's assets</td><td>Reviewing assets they've verified.</td></tr>
+          <tr><td><code>wallet-list</code></td><td>The user's wallets</td><td>Reviewing wallets they've verified.</td></tr>
         </tbody>
       </table>
 
       <h3 id="cleanup">Cleaning up</h3>
-      <p>The widget removes itself when the issuer closes it. If you need to close it from your own code, for example when the user navigates away in a single-page app, call <code>widget.destroy()</code>.</p>
+      <p>The widget removes itself when the user closes it. To close it from your own code, for example when the user navigates away in a single-page app, call <code>widget.destroy()</code>.</p>
 
       <h2 id="react">React example</h2>
 <pre><code>import { useEffect, useRef } from 'react'
