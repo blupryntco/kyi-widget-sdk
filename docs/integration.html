@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integration Guide · Bluprynt KYI Widget</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <div class="site-nav-inner">
+      <a class="brand" href="index.html">Bluprynt KYI Widget</a>
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="integration.html" aria-current="page">Integration guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="playground.html">Playground</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <article class="doc">
+      <h1>Integration guide</h1>
+      <p class="lead">Add the KYI widget to your platform: one endpoint on your backend and one function call on your frontend.</p>
+
+      <h2 id="credentials">1. Set up with Bluprynt</h2>
+      <p>Contact your Bluprynt representative and send them every origin where the widget will be embedded, for example <code>https://app.example.com</code>, <code>https://staging.example.com</code> and <code>http://localhost:3000</code>. Bluprynt adds them to its CSP and CORS policies. The widget won't load anywhere else.</p>
+      <p>In return you get:</p>
+      <ul>
+        <li>A <strong>partner ID</strong> that identifies your platform.</li>
+        <li>A <strong><code>SECRET_KEY</code></strong> for signing access tokens. Treat it like any other server secret: keep it in an environment variable or secret store, and never send it to the browser.</li>
+      </ul>
+      <div class="callout">
+        Widget shows an empty frame, or the console has a CSP error? The page's origin probably isn't on the allowlist. Scheme, host and port all have to match exactly, so <code>http://localhost:3000</code> and <code>http://localhost:5173</code> are different origins.
+      </div>
+
+      <h2 id="install">2. Install the SDK</h2>
+<pre><code>npm install @bluprynt/kyi-widget-sdk</code></pre>
+      <p>The package has two entry points:</p>
+      <ul>
+        <li><code>@bluprynt/kyi-widget-sdk</code> for the browser: opens the widget.</li>
+        <li><code>@bluprynt/kyi-widget-sdk/server</code> for Node.js 18+: generates access tokens.</li>
+      </ul>
+
+      <h2 id="token">3. Generate an access token on your backend</h2>
+      <p>Add an endpoint that your frontend calls before opening the widget. It returns a short-lived token for the logged-in user.</p>
+<pre><code>import { generateToken } from '@bluprynt/kyi-widget-sdk/server'
+
+app.post('/api/kyi/token', requireLogin, async (req, res) => {
+  const accessToken = await generateToken({
+    issuer: 'your-partner-id',
+    secretKey: process.env.BLUPRYNT_SECRET_KEY,
+    userId: req.session.user.id,
+    expiresIn: 3600,
+  })
+
+  res.json({ accessToken })
+})</code></pre>
+      <p>A note on naming: <code>issuer</code> here is the standard JWT term for whoever signs the token, which is your platform. Put your partner ID in it. It has nothing to do with the token issuers who use the widget.</p>
+
+      <h3 id="user-id">Choosing a user ID</h3>
+      <p>Bluprynt identifies a user by <code>userId</code> alone and doesn't check it. Their KYB results, verified wallets and on-chain identity are all stored against it. Pick an ID that is:</p>
+      <ul>
+        <li><strong>Stable.</strong> The same user always gets the same ID. Email addresses and usernames change, so don't use them.</li>
+        <li><strong>Unique and never reused.</strong> Each user has their own ID. Don't hand a deleted account's ID to someone new.</li>
+        <li><strong>Internal.</strong> Your database's primary key is usually right. Users shouldn't be able to choose or edit it.</li>
+      </ul>
+      <div class="callout">
+        <strong>Take the user ID from your authenticated session, never from the request.</strong>
+        If your endpoint read something like <code>req.body.userId</code>, anyone could ask for a token for someone else and open that person's verification. Bluprynt can't catch this, because the token is correctly signed.
+      </div>
+
+      <h3 id="other-platforms">Not using Node.js?</h3>
+      <p>Generate the JWT with any library for your language. Sign it with <strong>HS256</strong> using your <code>SECRET_KEY</code>, and include these claims:</p>
+<pre><code>{
+  "sub": "user-123",          // your internal user ID
+  "iss": "your-partner-id",   // your partner ID (see the naming note above)
+  "iat": 1766146154,          // issued at (Unix seconds)
+  "exp": 1766149754           // expires at (Unix seconds)
+}</code></pre>
+      <p>For example, in Python with PyJWT:</p>
+<pre><code>import time, jwt
+
+now = int(time.time())
+access_token = jwt.encode(
+    {"sub": user.id, "iss": "your-partner-id", "iat": now, "exp": now + 3600},
+    BLUPRYNT_SECRET_KEY,
+    algorithm="HS256",
+)</code></pre>
+
+      <h2 id="open">4. Open the widget on your frontend</h2>
+<pre><code>import { kyi } from '@bluprynt/kyi-widget-sdk'
+
+const { accessToken } = await fetch('/api/kyi/token', { method: 'POST' })
+  .then((r) =&gt; r.json())
+
+const widget = kyi('modal', 'kyi', accessToken, {
+  onReady: () =&gt; console.log('Widget loaded'),
+  onClose: () =&gt; console.log('Widget closed'),
+  onError: (error) =&gt; console.error(error),
+})</code></pre>
+      <p>Generate a new token each time you open the widget rather than caching one. Tokens are short-lived on purpose.</p>
+
+      <h3 id="modes">Display modes</h3>
+      <table>
+        <thead><tr><th>Mode</th><th>Looks like</th></tr></thead>
+        <tbody>
+          <tr><td><code>modal</code></td><td>A centered dialog over a dimmed page.</td></tr>
+          <tr><td><code>drawer</code></td><td>A panel that slides in from the right.</td></tr>
+        </tbody>
+      </table>
+      <p>In both modes the widget closes when the user clicks the close button, clicks outside it, or presses Escape.</p>
+
+      <h3 id="scopes">Scopes</h3>
+      <p>The scope decides which screen the widget opens on.</p>
+      <table>
+        <thead><tr><th>Scope</th><th>Opens</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td><code>kyi</code></td><td>The verification flow</td><td>Starting or continuing KYB and wallet verification.</td></tr>
+          <tr><td><code>asset-list</code></td><td>The user's assets</td><td>Reviewing assets they've verified.</td></tr>
+          <tr><td><code>wallet-list</code></td><td>The user's wallets</td><td>Reviewing wallets they've verified.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="cleanup">Cleaning up</h3>
+      <p>The widget removes itself when the user closes it. To close it from your own code, for example when the user navigates away in a single-page app, call <code>widget.destroy()</code>.</p>
+
+      <h2 id="react">React example</h2>
+<pre><code>import { useEffect, useRef } from 'react'
+import { kyi, type KYIWidget } from '@bluprynt/kyi-widget-sdk'
+
+export function VerifyButton() {
+  const widgetRef = useRef&lt;KYIWidget | null&gt;(null)
+
+  useEffect(() =&gt; () =&gt; widgetRef.current?.destroy(), [])
+
+  const open = async () =&gt; {
+    const { accessToken } = await fetch('/api/kyi/token', { method: 'POST' })
+      .then((r) =&gt; r.json())
+    widgetRef.current = kyi('modal', 'kyi', accessToken, {
+      onClose: () =&gt; { widgetRef.current = null },
+    })
+  }
+
+  return &lt;button onClick={open}&gt;Verify your asset&lt;/button&gt;
+}</code></pre>
+
+      <h2 id="security">Security checklist</h2>
+      <ul>
+        <li>Your <code>SECRET_KEY</code> lives only on your server.</li>
+        <li>Every origin that embeds the widget is on your allowlist with Bluprynt.</li>
+        <li>Your token endpoint requires login and takes the user ID from the session.</li>
+        <li>User IDs are stable, unique and never reused.</li>
+        <li>Tokens are short-lived and generated fresh for each widget session.</li>
+      </ul>
+
+      <p>Want to try it before writing code? Use the <a href="playground.html">playground</a>.</p>
+    </article>
+  </main>
+</body>
+</html>

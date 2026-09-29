@@ -22,11 +22,11 @@ pnpm add @bluprynt/kyi-widget-sdk
 
 ## How KYI Widget SDK works
 
-1. Ask Bluprynt for `SECRET_KEY` as part of partner integration.
+1. Ask Bluprynt for `SECRET_KEY` as part of partner integration, and send the list of origins where you'll embed the widget (including staging and local development) so they can be allowlisted.
 1. Implement Access Token JWT generation on your backend side.
 1. Use KYI Widget SDK with generated Access Token on behalf of your user.
 
-Use [playground](https://blupryntco.github.io/kyi-widget-sdk) to test KYI Widget SDK.
+Full documentation: [overview](https://blupryntco.github.io/kyi-widget-sdk), [integration guide](https://blupryntco.github.io/kyi-widget-sdk/integration.html), [API reference](https://blupryntco.github.io/kyi-widget-sdk/api.html) and [playground](https://blupryntco.github.io/kyi-widget-sdk/playground.html).
 
 ## Quick Start
 
@@ -87,22 +87,6 @@ widget.destroy();
 
 ## Widget Modes
 
-### Inline Mode
-
-Embeds the widget directly into a specified container element:
-
-```typescript
-const container = document.getElementById("kyi-container");
-
-const widget = kyi("inline", "kyi", accessToken, {
-  parentElement: container,
-});
-```
-
-```html
-<div id="kyi-container" style="height: 600px;"></div>
-```
-
 ### Modal Mode
 
 Displays the widget in a centered modal overlay:
@@ -141,7 +125,7 @@ kyi("modal", "kyi", accessToken);
 kyi("modal", "asset-list", accessToken);
 
 // View wallets
-kyi("inline", "wallet-list", accessToken, { parentElement: container });
+kyi("drawer", "wallet-list", accessToken);
 ```
 
 ## Checking KYI Status (Server-side)
@@ -170,7 +154,7 @@ Creates a KYI widget instance.
 
 | Parameter     | Type                               | Description                           |
 | ------------- | ---------------------------------- | ------------------------------------- |
-| `mode`        | `'inline' \| 'modal' \| 'drawer'`  | Widget display mode                   |
+| `mode`        | `'modal' \| 'drawer'`              | Widget display mode                   |
 | `scope`       | `'kyi' \| 'asset-list' \| 'wallet-list'` | Widget scope       |
 | `accessToken` | `string`                           | JWT access token from `generateToken` |
 | `options`     | `KYIOptions`                       | Optional configuration                |
@@ -179,7 +163,6 @@ Creates a KYI widget instance.
 
 | Option          | Type                     | Description                            |
 | --------------- | ------------------------ | -------------------------------------- |
-| `parentElement` | `HTMLElement`            | Container element (inline mode only)   |
 | `onClose`       | `() => void`             | Called when widget is closed           |
 | `onError`       | `(error: Error) => void` | Called when an error occurs            |
 | `onReady`       | `() => void`             | Called when widget is loaded and ready |
