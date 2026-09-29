@@ -12,6 +12,7 @@
       <a class="brand" href="index.html">Bluprynt KYI Widget</a>
       <ul>
         <li><a href="index.html" aria-current="page">Overview</a></li>
+        <li><a href="verification.html">Verification</a></li>
         <li><a href="integration.html">Integration guide</a></li>
         <li><a href="api.html">API reference</a></li>
         <li><a href="playground.html">Playground</a></li>
@@ -49,10 +50,11 @@
       <p>A token issuer verifies their asset in three steps, all inside the widget:</p>
       <ol class="flow">
         <li>They complete a KYB (Know Your Business) check.</li>
-        <li>They verify the wallets behind the asset.</li>
+        <li>They verify the wallets behind the asset, by signing a message or with one of the <a href="verification.html#methods">other methods</a>.</li>
         <li>Bluprynt creates an on-chain identity for them, which is then subject to ongoing compliance checks.</li>
       </ol>
       <p>The widget also lets issuers look back at the assets and wallets they've already verified. The SDK itself is a small JavaScript library that opens the widget as a modal or a drawer over your page.</p>
+      <p>Supported chains are Ethereum, Base, Plume, Avalanche, Solana and the XRP Ledger, with more EVM chains on the way. <a href="verification.html">Verification</a> has screenshots of the flow and the details of each method.</p>
 
       <h2 id="identity">How identity works</h2>
       <p>Your users never sign up for Bluprynt. There's no Bluprynt account, no second login, nothing extra to authenticate. You've already logged them in, and a signed access token carries that identity into the widget, so to them verification feels like part of your product.</p>
@@ -72,6 +74,7 @@
 
       <h2 id="next">Next steps</h2>
       <div class="cards">
+        <a class="card" href="verification.html"><strong>Verification</strong><span>The user flow, supported chains and wallet methods.</span></a>
         <a class="card" href="integration.html"><strong>Integration guide</strong><span>Step-by-step setup for your backend and frontend.</span></a>
         <a class="card" href="api.html"><strong>API reference</strong><span>Every function, option and type.</span></a>
         <a class="card" href="playground.html"><strong>Playground</strong><span>Generate a test token and open the widget.</span></a>
