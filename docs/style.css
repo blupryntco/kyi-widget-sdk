@@ -283,6 +283,25 @@ th {
   gap: 0 24px;
 }
 
+figure {
+  margin: 20px 0;
+}
+
+figure img {
+  display: block;
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+figcaption {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

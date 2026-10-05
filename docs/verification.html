@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification · Bluprynt KYI Widget</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <div class="site-nav-inner">
+      <a class="brand" href="index.html">Bluprynt KYI Widget</a>
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="verification.html" aria-current="page">Verification</a></li>
+        <li><a href="integration.html">Integration guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="playground.html">Playground</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <article class="doc">
+      <h1>Verification</h1>
+      <p class="lead">What your users do inside the widget, which chains are supported, and the ways they can prove they control a wallet.</p>
+
+      <h2 id="flow">The flow</h2>
+      <ol class="flow">
+        <li>The user completes a KYB (Know Your Business) check. This happens once, before their first asset.</li>
+        <li>They paste their token's address. Bluprynt detects which chain it's on, reads on-chain data and off-chain disclosures, and asks the user to confirm the rest.</li>
+        <li>Bluprynt lists the wallets with authority over the token, such as the owner or proxy admin, and the user signs with each one.</li>
+        <li>Bluprynt creates an on-chain identity for the user, which is then subject to ongoing compliance checks.</li>
+      </ol>
+
+      <figure>
+        <img src="images/verify-asset.png" width="1170" height="636" alt="The widget's 'Verify a new asset' screen, with a token address pasted in and Plume detected as the chain.">
+        <figcaption>Adding an asset: the user pastes a token address and the chain is detected automatically.</figcaption>
+      </figure>
+
+      <p>One signature covers every token a wallet controls, even across assets, so a user with several tokens behind the same owner wallet only signs once. If the user can't sign for one of the wallets, its tokens stay listed but unverified.</p>
+
+      <figure>
+        <img src="images/sign-wallets.png" width="1168" height="1112" alt="The 'Verify this token' dialog listing two wallets, an owner and a proxy admin, each with a Sign button.">
+        <figcaption>Verifying wallet authority: one row per wallet, each signed separately.</figcaption>
+      </figure>
+
+      <h2 id="chains">Supported chains</h2>
+      <table>
+        <thead><tr><th>Chain</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Ethereum</td><td>EVM</td></tr>
+          <tr><td>Base</td><td>EVM</td></tr>
+          <tr><td>Plume</td><td>EVM</td></tr>
+          <tr><td>Avalanche C-Chain</td><td>EVM</td></tr>
+          <tr><td>Solana</td><td>Solana</td></tr>
+          <tr><td>XRP Ledger</td><td>XRPL</td></tr>
+        </tbody>
+      </table>
+      <p>More EVM chains are being added. If your issuers use a chain that isn't listed, ask your Bluprynt representative.</p>
+
+      <h2 id="methods">Wallet verification methods</h2>
+      <p>Most methods ask the user to sign a short challenge message. Signing happens off-chain, so no funds move and there's no gas fee. The message expires after a while. Browser wallets fetch a new one automatically, and the other methods offer a "Get a new message" link.</p>
+
+      <h3 id="browser-wallet">Browser wallet</h3>
+      <p>The user connects a browser extension wallet and signs the message. Verification is instant.</p>
+      <ul>
+        <li><strong>EVM and Solana:</strong> Phantom.</li>
+        <li><strong>XRP Ledger:</strong> GemWallet or Crossmark.</li>
+      </ul>
+
+      <h3 id="walletconnect">WalletConnect</h3>
+      <p>Lets EVM and Solana users sign with MetaMask, mobile wallets and anything else WalletConnect supports. Verification is instant.</p>
+
+      <h3 id="manual-signature">Manual signature</h3>
+      <p>For keys that don't live in a browser wallet. The user copies the challenge message, signs it with their own tooling, and pastes the signature back.</p>
+      <ul>
+        <li><strong>EVM:</strong> <code>cast wallet sign --interactive "&lt;message&gt;"</code>, or any tool that does an EIP-191 <code>personal_sign</code>. Instant.</li>
+        <li><strong>Solana:</strong> <code>solana sign-offchain-message -k &lt;keypair.json&gt; "&lt;message&gt;"</code>. Reviewed by Bluprynt before it's confirmed.</li>
+        <li><strong>XRP Ledger:</strong> a short script using the <code>xrpl</code> or <code>ripple-keypairs</code> library. The widget shows an example. Instant.</li>
+      </ul>
+
+      <h3 id="hsm">HSM or custody</h3>
+      <p>For keys held in a hardware security module or by a custodian that can't sign arbitrary messages. The user sends a transaction from the wallet that does nothing except carry this memo:</p>
+<pre><code>Bluprynt KYI verification: Selected wallet &lt;address&gt; confirms authority</code></pre>
+      <p>They then email a link to the transaction to <a href="mailto:product@bluprynt.com">product@bluprynt.com</a>. Verification stays pending until Bluprynt has reviewed it. The transaction pays normal network fees.</p>
+
+      <h3 id="micro-transaction">Micro-transaction</h3>
+      <p>EVM only. The widget shows a small ETH amount and a Bluprynt verification address. The user sends exactly that amount from the wallet and pastes the transaction hash. They can close the widget and come back later, as long as the challenge hasn't expired. Verification is instant once the transaction is found.</p>
+
+      <div class="callout">
+        WalletConnect and micro-transactions aren't enabled for every integration. Ask your Bluprynt representative if your issuers need them.
+      </div>
+
+      <h3 id="multisig">Multisig wallets</h3>
+      <p>If the authority is a multisig, the user can sign either as the multisig itself or as any one of its signers.</p>
+    </article>
+  </main>
+</body>
+</html>
