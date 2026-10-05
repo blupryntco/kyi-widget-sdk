@@ -72,7 +72,7 @@ import { kyi } from "@bluprynt/kyi-widget-sdk";
 const { accessToken } = await fetch("/api/kyi-token").then((r) => r.json());
 
 // Embed the widget
-const widget = kyi("modal", "kyi", accessToken, {
+const widget = kyi("drawer", "kyi", accessToken, {
   onClose: () => {
     console.log("Widget closed");
   },
@@ -85,21 +85,9 @@ const widget = kyi("modal", "kyi", accessToken, {
 widget.destroy();
 ```
 
-## Widget Modes
+## Widget Mode
 
-### Modal Mode
-
-Displays the widget in a centered modal overlay:
-
-```typescript
-const widget = kyi("modal", "kyi", accessToken, {
-  onClose: () => console.log("Modal closed"),
-});
-```
-
-### Drawer Mode
-
-Displays the widget in a slide-in panel from the right:
+The widget opens as a drawer, a slide-in panel from the right:
 
 ```typescript
 const widget = kyi("drawer", "kyi", accessToken, {
@@ -119,10 +107,10 @@ The `scope` parameter determines which page to display:
 
 ```typescript
 // Start a new KYI application
-kyi("modal", "kyi", accessToken);
+kyi("drawer", "kyi", accessToken);
 
 // View assets
-kyi("modal", "asset-list", accessToken);
+kyi("drawer", "asset-list", accessToken);
 
 // View wallets
 kyi("drawer", "wallet-list", accessToken);
@@ -154,7 +142,7 @@ Creates a KYI widget instance.
 
 | Parameter     | Type                               | Description                           |
 | ------------- | ---------------------------------- | ------------------------------------- |
-| `mode`        | `'modal' \| 'drawer'`              | Widget display mode                   |
+| `mode`        | `'drawer'`                         | Widget display mode                   |
 | `scope`       | `'kyi' \| 'asset-list' \| 'wallet-list'` | Widget scope       |
 | `accessToken` | `string`                           | JWT access token from `generateToken` |
 | `options`     | `KYIOptions`                       | Optional configuration                |
@@ -215,7 +203,7 @@ function KYIButton({ accessToken }: { accessToken: string }) {
   const widgetRef = useRef<KYIWidget | null>(null);
 
   const openWidget = () => {
-    widgetRef.current = kyi("modal", "kyi", accessToken);
+    widgetRef.current = kyi("drawer", "kyi", accessToken);
   };
 
   useEffect(() => {

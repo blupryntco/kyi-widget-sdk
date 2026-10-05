@@ -96,22 +96,15 @@ access_token = jwt.encode(
 const { accessToken } = await fetch('/api/kyi/token', { method: 'POST' })
   .then((r) =&gt; r.json())
 
-const widget = kyi('modal', 'kyi', accessToken, {
+const widget = kyi('drawer', 'kyi', accessToken, {
   onReady: () =&gt; console.log('Widget loaded'),
   onClose: () =&gt; console.log('Widget closed'),
   onError: (error) =&gt; console.error(error),
 })</code></pre>
       <p>Generate a new token each time you open the widget rather than caching one. Tokens are short-lived on purpose.</p>
 
-      <h3 id="modes">Display modes</h3>
-      <table>
-        <thead><tr><th>Mode</th><th>Looks like</th></tr></thead>
-        <tbody>
-          <tr><td><code>modal</code></td><td>A centered dialog over a dimmed page.</td></tr>
-          <tr><td><code>drawer</code></td><td>A panel that slides in from the right.</td></tr>
-        </tbody>
-      </table>
-      <p>In both modes the widget closes when the user clicks the close button, clicks outside it, or presses Escape.</p>
+      <h3 id="modes">Display mode</h3>
+      <p>The widget opens as a <code>drawer</code>: a panel that slides in from the right. It closes when the user clicks the close button, clicks outside it, or presses Escape.</p>
 
       <h3 id="scopes">Scopes</h3>
       <p>The scope decides which screen the widget opens on.</p>
@@ -139,7 +132,7 @@ export function VerifyButton() {
   const open = async () =&gt; {
     const { accessToken } = await fetch('/api/kyi/token', { method: 'POST' })
       .then((r) =&gt; r.json())
-    widgetRef.current = kyi('modal', 'kyi', accessToken, {
+    widgetRef.current = kyi('drawer', 'kyi', accessToken, {
       onClose: () =&gt; { widgetRef.current = null },
     })
   }

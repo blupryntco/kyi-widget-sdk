@@ -299,7 +299,7 @@
 
   <main>
   <h1>Playground</h1>
-  <p class="lead">Generate a test token and open the widget in either mode.</p>
+  <p class="lead">Generate a test token and open the widget.</p>
 
   <div class="section">
     <h2>Step 1: Access Token</h2>
@@ -369,18 +369,11 @@ app.<span class="function">post</span>(<span class="string">'/api/kyi/token'</sp
           <option value="wallet-list">wallet-list - Wallet List</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="mode">Mode</label>
-        <select id="mode">
-          <option value="modal">Modal</option>
-          <option value="drawer">Drawer</option>
-        </select>
-      </div>
     </div>
     <div class="code-example" id="widget-code-example"><span class="comment">// Partner's Frontend - Widget Initialization</span>
 <span class="keyword">import</span> { <span class="function">kyi</span> } <span class="keyword">from</span> <span class="string">'@bluprynt/kyi-widget-sdk'</span>;
 
-<span class="keyword">const</span> widget = <span class="function">kyi</span>(<span class="string">'modal'</span>, <span class="string">'kyi'</span>, accessToken, {
+<span class="keyword">const</span> widget = <span class="function">kyi</span>(<span class="string">'drawer'</span>, <span class="string">'kyi'</span>, accessToken, {
   <span class="property">onReady</span>: () => <span class="function">console.log</span>(<span class="string">'Widget ready'</span>),
   <span class="property">onClose</span>: () => <span class="function">console.log</span>(<span class="string">'Widget closed'</span>),
   <span class="property">onError</span>: (err) => <span class="function">console.error</span>(<span class="string">'Error:'</span>, err),
@@ -496,7 +489,7 @@ widget.<span class="function">destroy</span>();</div>
     function getConfig() {
       const accessToken = document.getElementById('access-token').value.trim();
       const scope = document.getElementById('scope').value;
-      const mode = document.getElementById('mode').value;
+      const mode = 'drawer';
 
       if (!accessToken) {
         log('Error: Access token is required', 'error');
@@ -550,7 +543,7 @@ widget.<span class="function">destroy</span>();</div>
 
     function updateCodeExample() {
       const scope = document.getElementById('scope').value;
-      const mode = document.getElementById('mode').value;
+      const mode = 'drawer';
 
       document.getElementById('widget-code-example').innerHTML = `<span class="comment">// Partner's Frontend - Widget Initialization</span>
 <span class="keyword">import</span> { <span class="function">kyi</span> } <span class="keyword">from</span> <span class="string">'@bluprynt/kyi-widget-sdk'</span>;
@@ -573,8 +566,6 @@ widget.<span class="function">destroy</span>();`;
     document.getElementById('open-btn').addEventListener('click', openWidget);
     document.getElementById('destroy-btn').addEventListener('click', destroyWidget);
     document.getElementById('scope').addEventListener('change', updateCodeExample);
-    document.getElementById('mode').addEventListener('change', updateCodeExample);
-
     log('SDK loaded successfully', 'success');
   </script>
 </body>
