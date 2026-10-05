@@ -43,6 +43,9 @@
     "release": "changeset publish"
   },
   "packageManager": "pnpm@9.15.1",
+  "pnpm": {
+    "onlyBuiltDependencies": []
+  },
   "keywords": [
     "bluprynt",
     "kyi",
