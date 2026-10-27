@@ -41,7 +41,7 @@ import { generateToken } from "@bluprynt/kyi-widget-sdk/server";
 const accessToken = await generateToken({
   issuer: "your-partner-id",
   secretKey: process.env.BLUPRYNT_SECRET_KEY!,
-  userId: "user-123", // Your internal user identifier
+  issuerId: "org-123", // Your internal issuer identifier
   expiresIn: 3600, // Optional: token expiry in seconds (default: 1 hour)
 });
 
@@ -53,12 +53,21 @@ It is okay to use other platforms rather than Node.js, but you will need generat
 
 ```json
 {
-  "sub": "user-123",
+  "issuer_id": "org-123",
+  "sub": "org-123",
   "iss": "your-partner-id",
   "iat": 1766146154,
   "exp": 1766149754
 }
 ```
+
+`sub` carries the same value as `issuer_id` and is kept for backward compatibility.
+
+### Choosing an issuer ID
+
+An issuer follows your platform's own semantics. It can be an organization, in which case every member of that organization shares the same `issuerId`, or it can be a single user with their own `issuerId`. Either way, pick an ID that is stable, never reused, and taken from your authenticated session rather than from the request.
+
+`userId` is still accepted as a deprecated alias for `issuerId`.
 
 ### 2. Embed Widget (Client-side)
 
@@ -126,7 +135,7 @@ import { checkStatus } from "@bluprynt/kyi-widget-sdk/server";
 const status = await checkStatus({
   issuer: "your-partner-id",
   secretKey: process.env.BLUPRYNT_SECRET_KEY!,
-  userId: "user-123",
+  issuerId: "org-123",
 });
 
 console.log(status);
@@ -172,7 +181,8 @@ Generates a JWT access token for widget authentication.
 | ----------- | -------- | ------------------------------------------ |
 | `issuer`    | `string` | Your partner identifier                    |
 | `secretKey` | `string` | Your Bluprynt secret key                   |
-| `userId`    | `string` | Your internal user identifier              |
+| `issuerId`  | `string` | Your internal issuer identifier            |
+| `userId`    | `string` | Deprecated alias for `issuerId`            |
 | `expiresIn` | `number` | Token expiry in seconds (default: `3600`)  |
 
 **Returns:** `Promise<string>` - The signed JWT token
@@ -187,7 +197,8 @@ Checks the KYI verification status for a user.
 | ----------- | -------- | ------------------------------- |
 | `issuer`    | `string` | Your partner identifier         |
 | `secretKey` | `string` | Your Bluprynt secret key        |
-| `userId`    | `string` | Your internal user identifier   |
+| `issuerId`  | `string` | Your internal issuer identifier |
+| `userId`    | `string` | Deprecated alias for `issuerId` |
 
 **Returns:** `Promise<KYIStatus>`
 
