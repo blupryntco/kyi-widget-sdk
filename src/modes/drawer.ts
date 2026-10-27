@@ -25,7 +25,7 @@ export function renderDrawer(
   drawer.setAttribute('aria-label', 'Bluprynt KYI Widget')
 
   // Create iframe
-  const iframe = createIframe(scope, accessToken)
+  const iframe = createIframe(scope, accessToken, options.asset)
 
   // Close function
   const close = () => {

@@ -9,9 +9,34 @@ export type KYIMode = 'modal' | 'drawer'
 export type KYIScope = 'kyi' | 'asset-list' | 'wallet-list'
 
 /**
+ * The asset to open the widget for. Used to prefill and focus the flow, not as proof of ownership.
+ */
+export interface KYIAsset {
+  /**
+   * Display name of the asset
+   */
+  name?: string
+
+  /**
+   * Deployment address of the asset
+   */
+  address?: string
+
+  /**
+   * CAIP-10 account ID of the deployment, e.g. `eip155:1:0x…`
+   */
+  accountId?: string
+}
+
+/**
  * Configuration options for the KYI widget
  */
 export interface KYIOptions {
+  /**
+   * The asset to open the widget for
+   */
+  asset?: KYIAsset
+
   /**
    * Called when the widget is closed (modal/drawer only)
    */
