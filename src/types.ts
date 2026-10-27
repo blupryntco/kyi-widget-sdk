@@ -58,9 +58,15 @@ export interface GenerateTokenOptions {
   secretKey: string
 
   /**
-   * The internal user ID (partner's own user identifier)
+   * Your internal ID for the issuer. An issuer is whatever your platform treats it as:
+   * an organization (shared by all of its users) or a single user.
    */
-  userId: string
+  issuerId?: string
+
+  /**
+   * @deprecated Use `issuerId` instead.
+   */
+  userId?: string
 
   /**
    * Token expiration time in seconds (default: 3600 = 1 hour)
@@ -78,9 +84,14 @@ export interface CheckStatusOptions {
   secretKey: string
 
   /**
-   * The internal user ID to check status for
+   * Your internal ID for the issuer to check status for
    */
-  userId: string
+  issuerId?: string
+
+  /**
+   * @deprecated Use `issuerId` instead.
+   */
+  userId?: string
 }
 
 /**

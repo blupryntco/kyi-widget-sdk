@@ -66,11 +66,12 @@
         <tbody>
           <tr><td><code>issuer</code></td><td><code>string</code></td><td>Your partner ID. Becomes the <code>iss</code> claim. (JWT naming: this is your platform, not the user.)</td></tr>
           <tr><td><code>secretKey</code></td><td><code>string</code></td><td>Your <code>SECRET_KEY</code>.</td></tr>
-          <tr><td><code>userId</code></td><td><code>string</code></td><td>Your internal ID for the user. Becomes the <code>sub</code> claim. See <a href="integration.html#user-id">Choosing a user ID</a>.</td></tr>
+          <tr><td><code>issuerId</code></td><td><code>string</code></td><td>Your internal ID for the issuer: an organization or a single user. Becomes the <code>issuer_id</code> and <code>sub</code> claims. See <a href="integration.html#issuer-id">Choosing an issuer ID</a>.</td></tr>
+          <tr><td><code>userId</code></td><td><code>string</code></td><td>Deprecated alias for <code>issuerId</code>.</td></tr>
           <tr><td><code>expiresIn</code></td><td><code>number</code></td><td>Lifetime in seconds. Defaults to <code>3600</code>.</td></tr>
         </tbody>
       </table>
-      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>userId</code> is empty.</p>
+      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>issuerId</code> is empty.</p>
 
       <h2 id="types">Types</h2>
       <p>These TypeScript types are exported from the main entry point:</p>

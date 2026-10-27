@@ -18,7 +18,7 @@ import type { CheckStatusOptions, KYIStatus } from './types'
  * const status = await checkStatus({
  *   issuer: 'your-partner-id',
  *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
- *   userId: 'user-123',
+ *   issuerId: 'org-123',
  * });
  *
  * if (status.status === 'completed') {
@@ -27,13 +27,14 @@ import type { CheckStatusOptions, KYIStatus } from './types'
  * ```
  */
 export async function checkStatus(options: CheckStatusOptions): Promise<KYIStatus> {
-  const { secretKey, userId } = options
+  const { secretKey } = options
+  const issuerId = options.issuerId ?? options.userId
 
   if (!secretKey) {
     throw new Error('Secret key is required')
   }
-  if (!userId) {
-    throw new Error('User ID is required')
+  if (!issuerId) {
+    throw new Error('Issuer ID is required')
   }
 
   const response = await fetch(`${BLUPRYNT_API_URL}/kyi-status`, {

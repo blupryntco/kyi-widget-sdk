@@ -18,7 +18,7 @@ import type { GenerateTokenOptions } from './types'
  * const token = await generateToken({
  *   issuer: 'your-partner-id',
  *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
- *   userId: 'user-123',
+ *   issuerId: 'org-123',
  *   expiresIn: 3600, // 1 hour (optional)
  * });
  *
@@ -27,7 +27,8 @@ import type { GenerateTokenOptions } from './types'
  * ```
  */
 export async function generateToken(options: GenerateTokenOptions): Promise<string> {
-  const { issuer, secretKey, userId, expiresIn = 3600 } = options
+  const { issuer, secretKey, expiresIn = 3600 } = options
+  const issuerId = options.issuerId ?? options.userId
 
   if (!issuer) {
     throw new Error('Issuer is required')
@@ -35,13 +36,13 @@ export async function generateToken(options: GenerateTokenOptions): Promise<stri
   if (!secretKey) {
     throw new Error('Secret key is required')
   }
-  if (!userId) {
-    throw new Error('User ID is required')
+  if (!issuerId) {
+    throw new Error('Issuer ID is required')
   }
 
   const secret = new TextEncoder().encode(secretKey)
 
-  const token = await new SignJWT({ sub: userId })
+  const token = await new SignJWT({ sub: issuerId, issuer_id: issuerId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuer(issuer)
     .setIssuedAt()

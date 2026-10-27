@@ -52,7 +52,7 @@ app.post('/api/kyi/token', requireLogin, async (req, res) => {
   const accessToken = await generateToken({
     issuer: 'your-partner-id',
     secretKey: process.env.BLUPRYNT_SECRET_KEY,
-    userId: req.session.user.id,
+    issuerId: req.session.user.orgId,
     expiresIn: 3600,
   })
 
@@ -60,22 +60,29 @@ app.post('/api/kyi/token', requireLogin, async (req, res) => {
 })</code></pre>
       <p>A note on naming: <code>issuer</code> here is the standard JWT term for whoever signs the token, which is your platform. Put your partner ID in it. It has nothing to do with the token issuers who use the widget.</p>
 
-      <h3 id="user-id">Choosing a user ID</h3>
-      <p>Bluprynt identifies a user by <code>userId</code> alone and doesn't check it. Their KYB results, verified wallets and on-chain identity are all stored against it. Pick an ID that is:</p>
+      <h3 id="issuer-id">Choosing an issuer ID</h3>
+      <p>An issuer is whatever your platform treats as one. It can be:</p>
       <ul>
-        <li><strong>Stable.</strong> The same user always gets the same ID. Email addresses and usernames change, so don't use them.</li>
-        <li><strong>Unique and never reused.</strong> Each user has their own ID. Don't hand a deleted account's ID to someone new.</li>
+        <li><strong>An organization.</strong> Every member of the organization gets a token with the same <code>issuerId</code>, so they all see and work on the same verification.</li>
+        <li><strong>A single user.</strong> Each user has their own <code>issuerId</code> and their own verification.</li>
+      </ul>
+      <p>Bluprynt identifies an issuer by <code>issuerId</code> alone and doesn't check it. Their KYB results, verified wallets and on-chain identity are all stored against it. Pick an ID that is:</p>
+      <ul>
+        <li><strong>Stable.</strong> The same issuer always gets the same ID. Email addresses and usernames change, so don't use them.</li>
+        <li><strong>Unique and never reused.</strong> Each issuer has its own ID. Don't hand a deleted account's ID to someone new.</li>
         <li><strong>Internal.</strong> Your database's primary key is usually right. Users shouldn't be able to choose or edit it.</li>
       </ul>
       <div class="callout">
-        <strong>Take the user ID from your authenticated session, never from the request.</strong>
-        If your endpoint read something like <code>req.body.userId</code>, anyone could ask for a token for someone else and open that person's verification. Bluprynt can't catch this, because the token is correctly signed.
+        <strong>Take the issuer ID from your authenticated session, never from the request.</strong>
+        If your endpoint read something like <code>req.body.issuerId</code>, anyone could ask for a token for someone else and open their verification. Bluprynt can't catch this, because the token is correctly signed.
       </div>
+      <p><code>userId</code> is still accepted as a deprecated alias for <code>issuerId</code>.</p>
 
       <h3 id="other-platforms">Not using Node.js?</h3>
       <p>Generate the JWT with any library for your language. Sign it with <strong>HS256</strong> using your <code>SECRET_KEY</code>, and include these claims:</p>
 <pre><code>{
-  "sub": "user-123",          // your internal user ID
+  "issuer_id": "org-123",     // your internal issuer ID
+  "sub": "org-123",           // same value as issuer_id (deprecated)
   "iss": "your-partner-id",   // your partner ID (see the naming note above)
   "iat": 1766146154,          // issued at (Unix seconds)
   "exp": 1766149754           // expires at (Unix seconds)
@@ -85,7 +92,7 @@ app.post('/api/kyi/token', requireLogin, async (req, res) => {
 
 now = int(time.time())
 access_token = jwt.encode(
-    {"sub": user.id, "iss": "your-partner-id", "iat": now, "exp": now + 3600},
+    {"issuer_id": org.id, "sub": org.id, "iss": "your-partner-id", "iat": now, "exp": now + 3600},
     BLUPRYNT_SECRET_KEY,
     algorithm="HS256",
 )</code></pre>

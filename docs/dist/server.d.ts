@@ -1,4 +1,4 @@
-import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus } from "./types-Bbuxb5v8.js";
+import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus } from "./types-CyVO7U3i.js";
 
 //#region src/token.d.ts
 /**
@@ -18,7 +18,7 @@ import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus 
 * const token = await generateToken({
 *   issuer: 'your-partner-id',
 *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
-*   userId: 'user-123',
+*   issuerId: 'org-123',
 *   expiresIn: 3600, // 1 hour (optional)
 * });
 *
@@ -43,7 +43,7 @@ import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus 
  * const token = await generateToken({
  *   issuer: 'your-partner-id',
  *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
- *   userId: 'user-123',
+ *   issuerId: 'org-123',
  *   expiresIn: 3600, // 1 hour (optional)
  * });
  *
@@ -73,7 +73,7 @@ declare function generateToken(options: GenerateTokenOptions): Promise<string>;
  * const status = await checkStatus({
  *   issuer: 'your-partner-id',
  *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
- *   userId: 'user-123',
+ *   issuerId: 'org-123',
  * });
  *
  * if (status.status === 'completed') {
