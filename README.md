@@ -125,6 +125,21 @@ kyi("drawer", "asset-list", accessToken);
 kyi("drawer", "wallet-list", accessToken);
 ```
 
+## Opening the Widget for an Asset
+
+Pass `asset` to open the widget for a specific asset. The widget prefills the form with it and shows its verification state:
+
+```typescript
+kyi("drawer", "kyi", accessToken, {
+  asset: {
+    name: "My Token",
+    accountId: "eip155:1:0x1234567890abcdef1234567890abcdef12345678",
+  },
+});
+```
+
+All fields are optional. `address` can be passed instead of `accountId`; if both are given, they must point at the same deployment.
+
 ## Checking KYI Status (Server-side)
 
 Query the current KYI status for a user from your backend:
@@ -160,6 +175,7 @@ Creates a KYI widget instance.
 
 | Option          | Type                     | Description                            |
 | --------------- | ------------------------ | -------------------------------------- |
+| `asset`         | `KYIAsset`               | Asset to open the widget for           |
 | `onClose`       | `() => void`             | Called when widget is closed           |
 | `onError`       | `(error: Error) => void` | Called when an error occurs            |
 | `onReady`       | `() => void`             | Called when widget is loaded and ready |

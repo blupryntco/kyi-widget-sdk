@@ -41,11 +41,23 @@
 
       <h3 id="kyi-options"><code>KYIOptions</code></h3>
       <table>
-        <thead><tr><th>Option</th><th>Type</th><th>Called when</th></tr></thead>
+        <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
+          <tr><td><code>asset</code></td><td><code>KYIAsset</code></td><td>The asset to open the widget for. See <a href="#kyi-asset"><code>KYIAsset</code></a>.</td></tr>
           <tr><td><code>onReady</code></td><td><code>() =&gt; void</code></td><td>The widget has loaded.</td></tr>
           <tr><td><code>onClose</code></td><td><code>() =&gt; void</code></td><td>The user closes the widget, or the widget closes itself.</td></tr>
           <tr><td><code>onError</code></td><td><code>(error: Error) =&gt; void</code></td><td>The widget reports an error.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="kyi-asset"><code>KYIAsset</code></h3>
+      <p>Prefills the flow and selects which of the issuer's assets to show. It is not proof of ownership: verification still runs on the asset's own application. All fields are optional.</p>
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>name</code></td><td><code>string</code></td><td>Display name of the asset.</td></tr>
+          <tr><td><code>accountId</code></td><td><code>string</code></td><td>CAIP-10 account ID of the deployment, e.g. <code>eip155:1:0x…</code>.</td></tr>
+          <tr><td><code>address</code></td><td><code>string</code></td><td>Deployment address. If <code>accountId</code> is also given, both must point at the same deployment.</td></tr>
         </tbody>
       </table>
 
