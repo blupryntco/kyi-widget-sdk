@@ -42,7 +42,7 @@ const accessToken = await generateToken({
   issuer: "your-partner-id",
   secretKey: process.env.BLUPRYNT_SECRET_KEY!,
   issuerId: "org-123", // Your internal issuer identifier
-  expiresIn: 3600, // Optional: token expiry in seconds (default: 1 hour)
+  expiresIn: 3600, // Optional: token expiry in seconds (default and maximum: 1 hour)
 });
 
 // Return token to your frontend
@@ -56,12 +56,13 @@ It is okay to use other platforms rather than Node.js, but you will need generat
   "issuer_id": "org-123",
   "sub": "org-123",
   "iss": "your-partner-id",
+  "aud": "bluprynt-widget",
   "iat": 1766146154,
   "exp": 1766149754
 }
 ```
 
-`sub` carries the same value as `issuer_id` and is kept for backward compatibility.
+`sub` carries the same value as `issuer_id` and is kept for backward compatibility. `exp` should be at most one hour after `iat`.
 
 ### Choosing an issuer ID
 
@@ -199,7 +200,7 @@ Generates a JWT access token for widget authentication.
 | `secretKey` | `string` | Your Bluprynt secret key                   |
 | `issuerId`  | `string` | Your internal issuer identifier            |
 | `userId`    | `string` | Deprecated alias for `issuerId`            |
-| `expiresIn` | `number` | Token expiry in seconds (default: `3600`)  |
+| `expiresIn` | `number` | Token expiry in seconds (default and max: `3600`) |
 
 **Returns:** `Promise<string>` - The signed JWT token
 

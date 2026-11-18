@@ -1,6 +1,9 @@
 import { SignJWT } from 'jose'
 import type { GenerateTokenOptions } from './types'
 
+export const MAX_EXPIRES_IN = 3600
+export const TOKEN_AUDIENCE = 'bluprynt-widget'
+
 /**
  * Generate a JWT access token for the KYI widget
  *
@@ -27,7 +30,7 @@ import type { GenerateTokenOptions } from './types'
  * ```
  */
 export async function generateToken(options: GenerateTokenOptions): Promise<string> {
-  const { issuer, secretKey, expiresIn = 3600 } = options
+  const { issuer, secretKey, expiresIn = MAX_EXPIRES_IN } = options
   const issuerId = options.issuerId ?? options.userId
 
   if (!issuer) {
@@ -39,14 +42,18 @@ export async function generateToken(options: GenerateTokenOptions): Promise<stri
   if (!issuerId) {
     throw new Error('Issuer ID is required')
   }
+  if (!Number.isInteger(expiresIn) || expiresIn <= 0) {
+    throw new Error('expiresIn must be a positive integer number of seconds')
+  }
 
   const secret = new TextEncoder().encode(secretKey)
 
   const token = await new SignJWT({ sub: issuerId, issuer_id: issuerId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuer(issuer)
+    .setAudience(TOKEN_AUDIENCE)
     .setIssuedAt()
-    .setExpirationTime(`${expiresIn}s`)
+    .setExpirationTime(`${Math.min(expiresIn, MAX_EXPIRES_IN)}s`)
     .sign(secret)
 
   return token

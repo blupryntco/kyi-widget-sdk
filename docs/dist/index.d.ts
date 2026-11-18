@@ -1,4 +1,4 @@
-import { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-CyVO7U3i.js";
+import { AssetVerification, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-DYomDTud.js";
 
 //#region src/widget.d.ts
 /**
@@ -44,5 +44,5 @@ declare function kyi(mode: KYIMode, scope: KYIScope, accessToken: string, option
 //#endregion
 //# sourceMappingURL=widget.d.ts.map
 
-export { AssetVerification, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget, kyi };
+export { AssetVerification, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget, kyi };
 //# sourceMappingURL=index.d.ts.map
