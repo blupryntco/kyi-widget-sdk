@@ -35,7 +35,7 @@ export function createIframe(
   iframe.src = buildIframeUrl(scope, accessToken, asset)
   iframe.setAttribute('allow', 'clipboard-write; web-share')
   iframe.setAttribute('loading', 'eager')
-  iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin')
+  iframe.setAttribute('referrerpolicy', 'no-referrer')
 
   return iframe
 }
