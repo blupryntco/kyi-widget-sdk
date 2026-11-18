@@ -59,9 +59,9 @@ export function setupMessageListener(
       return
     }
 
-    const message = event.data as KYIMessage
+    const message = event.data as KYIMessage | null | undefined
 
-    switch (message.type) {
+    switch (message?.type) {
       case 'kyi:ready':
         options.onReady?.()
         break
