@@ -1,6 +1,8 @@
 import { BLUPRYNT_BASE_URL, CSS_PREFIX, SCOPE_PATHS } from './constants'
 import type { KYIAsset, KYIMessage, KYIOptions, KYIScope } from './types'
 
+const BLUPRYNT_ORIGIN = new URL(BLUPRYNT_BASE_URL).origin
+
 /**
  * Build the iframe URL for the given scope and access token
  */
@@ -33,6 +35,7 @@ export function createIframe(
   iframe.src = buildIframeUrl(scope, accessToken, asset)
   iframe.setAttribute('allow', 'clipboard-write; web-share')
   iframe.setAttribute('loading', 'eager')
+  iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin')
 
   return iframe
 }
@@ -47,7 +50,7 @@ export function setupMessageListener(
 ): () => void {
   const handleMessage = (event: MessageEvent) => {
     // Only accept messages from Bluprynt origin
-    if (!event.origin.includes('bluprynt.com')) {
+    if (event.origin !== BLUPRYNT_ORIGIN) {
       return
     }
 
