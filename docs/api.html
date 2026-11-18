@@ -83,7 +83,7 @@
           <tr><td><code>expiresIn</code></td><td><code>number</code></td><td>Lifetime in seconds. Defaults to <code>3600</code>, which is also the maximum; larger values are capped.</td></tr>
         </tbody>
       </table>
-      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>issuerId</code> is empty, or if <code>expiresIn</code> is not a positive integer.</p>
+      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>issuerId</code> is empty, or if <code>expiresIn</code> is under 1 second.</p>
 
       <h2 id="types">Types</h2>
       <p>These TypeScript types are exported from the main entry point:</p>

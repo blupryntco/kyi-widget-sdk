@@ -16,18 +16,18 @@ describe('generateToken', () => {
     expect(decodeJwt(token).aud).toBe('bluprynt-widget')
   })
 
-  it('keeps a shorter lifetime', async () => {
-    expect(lifetime(await generateToken({ ...base, expiresIn: 600 }))).toBe(600)
+  it.each([
+    [600, 600],
+    [1.9, 1],
+    [3600, 3600],
+    [3601, 3600],
+    [86400, 3600],
+    [Number.POSITIVE_INFINITY, 3600],
+  ])('expiresIn %s gives a %s-second token', async (expiresIn, expected) => {
+    expect(lifetime(await generateToken({ ...base, expiresIn }))).toBe(expected)
   })
 
-  it('caps longer lifetimes at one hour', async () => {
-    expect(lifetime(await generateToken({ ...base, expiresIn: 86400 }))).toBe(3600)
+  it.each([0, 0.5, -1, Number.NaN])('rejects expiresIn %s', async (expiresIn) => {
+    await expect(generateToken({ ...base, expiresIn })).rejects.toThrow('expiresIn')
   })
-
-  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
-    'rejects expiresIn %s',
-    async (expiresIn) => {
-      await expect(generateToken({ ...base, expiresIn })).rejects.toThrow('expiresIn')
-    }
-  )
 })
