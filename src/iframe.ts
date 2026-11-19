@@ -44,6 +44,8 @@ export function setupMessageListener(
   options: KYIOptions,
   onClose?: () => void
 ): () => void {
+  let ready = false
+
   const handleMessage = (event: MessageEvent) => {
     // Only accept messages from Bluprynt origin
     if (event.origin !== BLUPRYNT_ORIGIN) {
@@ -63,7 +65,10 @@ export function setupMessageListener(
           { type: 'kyi:token', token: accessToken },
           BLUPRYNT_ORIGIN
         )
-        options.onReady?.()
+        if (!ready) {
+          ready = true
+          options.onReady?.()
+        }
         break
       case 'kyi:error':
         options.onError?.(new Error(String(message.payload ?? 'Unknown error')))
