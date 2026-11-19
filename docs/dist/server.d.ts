@@ -1,4 +1,4 @@
-import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus } from "./types-Bbl6-ByH.js";
+import { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIStatus } from "./types-DYomDTud.js";
 
 //#region src/token.d.ts
 /**

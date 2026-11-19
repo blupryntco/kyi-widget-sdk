@@ -80,7 +80,7 @@ interface GenerateTokenOptions {
    */
   userId?: string;
   /**
-   * Token expiration time in seconds (default: 3600 = 1 hour)
+   * Token expiration time in seconds (default and maximum: 3600 = 1 hour). Larger values are capped.
    */
   expiresIn?: number;
 }
@@ -148,4 +148,4 @@ interface KYIStatus {
  * Internal message types for iframe communication
  */
 export { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget };
-//# sourceMappingURL=types-Bbl6-ByH.d.ts.map
+//# sourceMappingURL=types-DYomDTud.d.ts.map

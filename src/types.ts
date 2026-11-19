@@ -94,7 +94,7 @@ export interface GenerateTokenOptions {
   userId?: string
 
   /**
-   * Token expiration time in seconds (default: 3600 = 1 hour)
+   * Token expiration time in seconds (default and maximum: 3600 = 1 hour). Larger values are capped.
    */
   expiresIn?: number
 }
