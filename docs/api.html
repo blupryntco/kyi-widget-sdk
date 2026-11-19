@@ -80,10 +80,10 @@
           <tr><td><code>secretKey</code></td><td><code>string</code></td><td>Your <code>SECRET_KEY</code>.</td></tr>
           <tr><td><code>issuerId</code></td><td><code>string</code></td><td>Your internal ID for the issuer: an organization or a single user. Becomes the <code>issuer_id</code> and <code>sub</code> claims. See <a href="integration.html#issuer-id">Choosing an issuer ID</a>.</td></tr>
           <tr><td><code>userId</code></td><td><code>string</code></td><td>Deprecated alias for <code>issuerId</code>.</td></tr>
-          <tr><td><code>expiresIn</code></td><td><code>number</code></td><td>Lifetime in seconds. Defaults to <code>3600</code>.</td></tr>
+          <tr><td><code>expiresIn</code></td><td><code>number</code></td><td>Lifetime in seconds. Defaults to <code>3600</code>, which is also the maximum; larger values are capped.</td></tr>
         </tbody>
       </table>
-      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>issuerId</code> is empty.</p>
+      <p>Throws if <code>issuer</code>, <code>secretKey</code> or <code>issuerId</code> is empty, or if <code>expiresIn</code> is under 1 second.</p>
 
       <h2 id="types">Types</h2>
       <p>These TypeScript types are exported from the main entry point:</p>

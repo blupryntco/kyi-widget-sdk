@@ -1,4 +1,4 @@
-import { AssetVerification, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-Bbl6-ByH.js";
+import { AssetVerification, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget } from "./types-DYomDTud.js";
 
 //#region src/widget.d.ts
 /**
