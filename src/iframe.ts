@@ -4,16 +4,15 @@ import type { KYIAsset, KYIMessage, KYIOptions, KYIScope } from './types'
 const BLUPRYNT_ORIGIN = new URL(BLUPRYNT_BASE_URL).origin
 
 /**
- * Build the iframe URL for the given scope and access token
+ * Build the iframe URL for the given scope
  */
-export function buildIframeUrl(scope: KYIScope, accessToken: string, asset?: KYIAsset): string {
+export function buildIframeUrl(scope: KYIScope, asset?: KYIAsset): string {
   const path = SCOPE_PATHS[scope]
   if (!path) {
     throw new Error(`Invalid scope: ${scope}`)
   }
 
   const url = new URL(path, BLUPRYNT_BASE_URL)
-  url.searchParams.set('token', accessToken)
   url.searchParams.set('embed', 'true')
   if (asset?.name) url.searchParams.set('asset_name', asset.name)
   if (asset?.address) url.searchParams.set('address', asset.address)
@@ -25,14 +24,10 @@ export function buildIframeUrl(scope: KYIScope, accessToken: string, asset?: KYI
 /**
  * Create an iframe element
  */
-export function createIframe(
-  scope: KYIScope,
-  accessToken: string,
-  asset?: KYIAsset
-): HTMLIFrameElement {
+export function createIframe(scope: KYIScope, asset?: KYIAsset): HTMLIFrameElement {
   const iframe = document.createElement('iframe')
   iframe.className = `${CSS_PREFIX}-iframe`
-  iframe.src = buildIframeUrl(scope, accessToken, asset)
+  iframe.src = buildIframeUrl(scope, asset)
   iframe.setAttribute('allow', 'clipboard-write; web-share')
   iframe.setAttribute('loading', 'eager')
   iframe.setAttribute('referrerpolicy', 'no-referrer')
@@ -45,6 +40,7 @@ export function createIframe(
  */
 export function setupMessageListener(
   iframe: HTMLIFrameElement,
+  accessToken: string,
   options: KYIOptions,
   onClose?: () => void
 ): () => void {
@@ -63,6 +59,10 @@ export function setupMessageListener(
 
     switch (message?.type) {
       case 'kyi:ready':
+        iframe.contentWindow?.postMessage(
+          { type: 'kyi:token', token: accessToken },
+          BLUPRYNT_ORIGIN
+        )
         options.onReady?.()
         break
       case 'kyi:error':

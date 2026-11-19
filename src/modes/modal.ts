@@ -25,7 +25,7 @@ export function renderModal(
   modal.setAttribute('aria-label', 'Bluprynt KYI Widget')
 
   // Create iframe
-  const iframe = createIframe(scope, accessToken, options.asset)
+  const iframe = createIframe(scope, options.asset)
 
   // Close function
   const close = () => {
@@ -66,7 +66,7 @@ export function renderModal(
   modal.addEventListener('click', (e) => e.stopPropagation())
 
   // Set up message listener
-  const removeListener = setupMessageListener(iframe, options, close)
+  const removeListener = setupMessageListener(iframe, accessToken, options, close)
 
   // Assemble modal
   modal.appendChild(header)
