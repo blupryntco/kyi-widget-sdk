@@ -16,6 +16,24 @@ const post = (data: unknown, { origin = ORIGIN, source = contentWindow as unknow
   window.dispatchEvent(event)
 }
 
+const everyMessage = [
+  { type: 'kyi:ready' },
+  { type: 'kyi:error', payload: 'injected' },
+  { type: 'kyi:close' },
+]
+
+const listen = () => {
+  const spies = { onReady: vi.fn(), onError: vi.fn(), onClose: vi.fn(), closeWidget: vi.fn() }
+  const { closeWidget, ...options } = spies
+  setupMessageListener(iframe, 'partner-token', options, closeWidget)
+  return spies
+}
+
+const expectNothingHappened = (spies: ReturnType<typeof listen>) => {
+  expect(contentWindow.postMessage).not.toHaveBeenCalled()
+  for (const spy of Object.values(spies)) expect(spy).not.toHaveBeenCalled()
+}
+
 beforeEach(() => {
   vi.stubGlobal('window', new EventTarget())
   contentWindow = { postMessage: vi.fn() }
@@ -48,33 +66,49 @@ describe('setupMessageListener', () => {
     'https://bluprynt.com',
     'http://app.bluprynt.com',
   ])('ignores messages from %s', (origin) => {
-    const onReady = vi.fn()
-    const onError = vi.fn()
-    setupMessageListener(iframe, 'partner-token', { onReady, onError })
+    const spies = listen()
 
-    post({ type: 'kyi:ready' }, { origin })
-    post({ type: 'kyi:error', payload: 'injected' }, { origin })
+    for (const message of everyMessage) post(message, { origin })
 
-    expect(contentWindow.postMessage).not.toHaveBeenCalled()
-    expect(onReady).not.toHaveBeenCalled()
-    expect(onError).not.toHaveBeenCalled()
+    expectNothingHappened(spies)
   })
 
   it('ignores messages from another window on the Bluprynt origin', () => {
-    const onReady = vi.fn()
-    setupMessageListener(iframe, 'partner-token', { onReady })
+    const spies = listen()
 
-    post({ type: 'kyi:ready' }, { source: {} })
+    for (const message of everyMessage) post(message, { source: {} })
 
-    expect(contentWindow.postMessage).not.toHaveBeenCalled()
-    expect(onReady).not.toHaveBeenCalled()
+    expectNothingHappened(spies)
   })
 
   it('ignores empty messages', () => {
-    setupMessageListener(iframe, 'partner-token', {})
+    const spies = listen()
 
-    expect(() => post(null)).not.toThrow()
-    expect(contentWindow.postMessage).not.toHaveBeenCalled()
+    post(null)
+    post(undefined)
+
+    expectNothingHappened(spies)
+  })
+
+  it('reports kyi:error from the widget as an Error', () => {
+    const { onError } = listen()
+
+    post({ type: 'kyi:error', payload: 'Verification failed' })
+    post({ type: 'kyi:error' })
+
+    expect(onError.mock.calls.map(([error]) => error.message)).toEqual([
+      'Verification failed',
+      'Unknown error',
+    ])
+  })
+
+  it('closes the widget on kyi:close from the widget', () => {
+    const { onClose, closeWidget } = listen()
+
+    post({ type: 'kyi:close' })
+
+    expect(closeWidget).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(1)
   })
 
   it('stops listening once removed', () => {
