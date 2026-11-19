@@ -41,8 +41,8 @@ import { generateToken } from "@bluprynt/kyi-widget-sdk/server";
 const accessToken = await generateToken({
   issuer: "your-partner-id",
   secretKey: process.env.BLUPRYNT_SECRET_KEY!,
-  userId: "user-123", // Your internal user identifier
-  expiresIn: 3600, // Optional: token expiry in seconds (default: 1 hour)
+  issuerId: "org-123", // Your internal issuer identifier
+  expiresIn: 3600, // Optional: token expiry in seconds (default and maximum: 1 hour)
 });
 
 // Return token to your frontend
@@ -53,12 +53,22 @@ It is okay to use other platforms rather than Node.js, but you will need generat
 
 ```json
 {
-  "sub": "user-123",
+  "issuer_id": "org-123",
+  "sub": "org-123",
   "iss": "your-partner-id",
+  "aud": "bluprynt-widget",
   "iat": 1766146154,
   "exp": 1766149754
 }
 ```
+
+`sub` carries the same value as `issuer_id` and is kept for backward compatibility. `exp` should be at most one hour after `iat`.
+
+### Choosing an issuer ID
+
+An issuer follows your platform's own semantics. It can be an organization, in which case every member of that organization shares the same `issuerId`, or it can be a single user with their own `issuerId`. Either way, pick an ID that is stable, never reused, and taken from your authenticated session rather than from the request.
+
+`userId` is still accepted as a deprecated alias for `issuerId`.
 
 ### 2. Embed Widget (Client-side)
 
@@ -116,6 +126,21 @@ kyi("drawer", "asset-list", accessToken);
 kyi("drawer", "wallet-list", accessToken);
 ```
 
+## Opening the Widget for an Asset
+
+Pass `asset` to open the widget for a specific asset. The widget prefills the form with it and shows its verification state:
+
+```typescript
+kyi("drawer", "kyi", accessToken, {
+  asset: {
+    name: "My Token",
+    accountId: "eip155:1:0x1234567890abcdef1234567890abcdef12345678",
+  },
+});
+```
+
+All fields are optional. `address` can be passed instead of `accountId`; if both are given, they must point at the same deployment.
+
 ## Checking KYI Status (Server-side)
 
 Query the current KYI status for a user from your backend:
@@ -126,7 +151,7 @@ import { checkStatus } from "@bluprynt/kyi-widget-sdk/server";
 const status = await checkStatus({
   issuer: "your-partner-id",
   secretKey: process.env.BLUPRYNT_SECRET_KEY!,
-  userId: "user-123",
+  issuerId: "org-123",
 });
 
 console.log(status);
@@ -151,6 +176,7 @@ Creates a KYI widget instance.
 
 | Option          | Type                     | Description                            |
 | --------------- | ------------------------ | -------------------------------------- |
+| `asset`         | `KYIAsset`               | Asset to open the widget for           |
 | `onClose`       | `() => void`             | Called when widget is closed           |
 | `onError`       | `(error: Error) => void` | Called when an error occurs            |
 | `onReady`       | `() => void`             | Called when widget is loaded and ready |
@@ -172,8 +198,9 @@ Generates a JWT access token for widget authentication.
 | ----------- | -------- | ------------------------------------------ |
 | `issuer`    | `string` | Your partner identifier                    |
 | `secretKey` | `string` | Your Bluprynt secret key                   |
-| `userId`    | `string` | Your internal user identifier              |
-| `expiresIn` | `number` | Token expiry in seconds (default: `3600`)  |
+| `issuerId`  | `string` | Your internal issuer identifier            |
+| `userId`    | `string` | Deprecated alias for `issuerId`            |
+| `expiresIn` | `number` | Token expiry in seconds (default and max: `3600`) |
 
 **Returns:** `Promise<string>` - The signed JWT token
 
@@ -187,7 +214,8 @@ Checks the KYI verification status for a user.
 | ----------- | -------- | ------------------------------- |
 | `issuer`    | `string` | Your partner identifier         |
 | `secretKey` | `string` | Your Bluprynt secret key        |
-| `userId`    | `string` | Your internal user identifier   |
+| `issuerId`  | `string` | Your internal issuer identifier |
+| `userId`    | `string` | Deprecated alias for `issuerId` |
 
 **Returns:** `Promise<KYIStatus>`
 

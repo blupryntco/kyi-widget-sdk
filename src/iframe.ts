@@ -1,10 +1,12 @@
 import { BLUPRYNT_BASE_URL, CSS_PREFIX, SCOPE_PATHS } from './constants'
-import type { KYIMessage, KYIOptions, KYIScope } from './types'
+import type { KYIAsset, KYIMessage, KYIOptions, KYIScope } from './types'
+
+const BLUPRYNT_ORIGIN = new URL(BLUPRYNT_BASE_URL).origin
 
 /**
  * Build the iframe URL for the given scope and access token
  */
-export function buildIframeUrl(scope: KYIScope, accessToken: string): string {
+export function buildIframeUrl(scope: KYIScope, accessToken: string, asset?: KYIAsset): string {
   const path = SCOPE_PATHS[scope]
   if (!path) {
     throw new Error(`Invalid scope: ${scope}`)
@@ -13,6 +15,9 @@ export function buildIframeUrl(scope: KYIScope, accessToken: string): string {
   const url = new URL(path, BLUPRYNT_BASE_URL)
   url.searchParams.set('token', accessToken)
   url.searchParams.set('embed', 'true')
+  if (asset?.name) url.searchParams.set('asset_name', asset.name)
+  if (asset?.address) url.searchParams.set('address', asset.address)
+  if (asset?.accountId) url.searchParams.set('account_id', asset.accountId)
 
   return url.toString()
 }
@@ -20,12 +25,17 @@ export function buildIframeUrl(scope: KYIScope, accessToken: string): string {
 /**
  * Create an iframe element
  */
-export function createIframe(scope: KYIScope, accessToken: string): HTMLIFrameElement {
+export function createIframe(
+  scope: KYIScope,
+  accessToken: string,
+  asset?: KYIAsset
+): HTMLIFrameElement {
   const iframe = document.createElement('iframe')
   iframe.className = `${CSS_PREFIX}-iframe`
-  iframe.src = buildIframeUrl(scope, accessToken)
+  iframe.src = buildIframeUrl(scope, accessToken, asset)
   iframe.setAttribute('allow', 'clipboard-write; web-share')
   iframe.setAttribute('loading', 'eager')
+  iframe.setAttribute('referrerpolicy', 'no-referrer')
 
   return iframe
 }
@@ -40,7 +50,7 @@ export function setupMessageListener(
 ): () => void {
   const handleMessage = (event: MessageEvent) => {
     // Only accept messages from Bluprynt origin
-    if (!event.origin.includes('bluprynt.com')) {
+    if (event.origin !== BLUPRYNT_ORIGIN) {
       return
     }
 
@@ -49,9 +59,9 @@ export function setupMessageListener(
       return
     }
 
-    const message = event.data as KYIMessage
+    const message = event.data as KYIMessage | null | undefined
 
-    switch (message.type) {
+    switch (message?.type) {
       case 'kyi:ready':
         options.onReady?.()
         break

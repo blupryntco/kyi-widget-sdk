@@ -317,8 +317,8 @@
         <input type="text" id="secret-key" placeholder="Your secret key" value="test-secret-key">
       </div>
       <div class="form-group">
-        <label for="user-id">Internal User ID</label>
-        <input type="text" id="user-id" placeholder="e.g., user-123" value="user-123">
+        <label for="issuer-id">Internal Issuer ID</label>
+        <input type="text" id="issuer-id" placeholder="e.g., org-123" value="org-123">
       </div>
     </div>
     <div class="button-group">
@@ -332,7 +332,7 @@ app.<span class="function">post</span>(<span class="string">'/api/kyi/token'</sp
   <span class="keyword">const</span> token = <span class="keyword">await</span> <span class="function">generateToken</span>({
     <span class="property">issuer</span>: <span class="string">'your-partner-id'</span>,           <span class="comment">// Your Bluprynt partner ID</span>
     <span class="property">secretKey</span>: process.env.BLUPRYNT_SECRET, <span class="comment">// Keep secret on server!</span>
-    <span class="property">userId</span>: req.user.id,                    <span class="comment">// Your internal user ID</span>
+    <span class="property">issuerId</span>: req.user.orgId,               <span class="comment">// Your internal issuer ID</span>
     <span class="property">expiresIn</span>: 3600,                        <span class="comment">// Token validity (seconds)</span>
   });
 
@@ -434,9 +434,9 @@ widget.<span class="function">destroy</span>();</div>
     async function generateAndApplyToken() {
       const issuer = document.getElementById('issuer').value.trim();
       const secretKey = document.getElementById('secret-key').value.trim();
-      const userId = document.getElementById('user-id').value.trim();
+      const issuerId = document.getElementById('issuer-id').value.trim();
 
-      if (!issuer || !secretKey || !userId) {
+      if (!issuer || !secretKey || !issuerId) {
         log('Error: All token fields are required', 'error');
         return;
       }
@@ -447,7 +447,7 @@ widget.<span class="function">destroy</span>();</div>
         const token = await generateToken({
           issuer,
           secretKey,
-          userId,
+          issuerId,
           expiresIn: 3600
         });
 
@@ -466,7 +466,7 @@ widget.<span class="function">destroy</span>();</div>
         // Apply to access token field
         document.getElementById('access-token').value = token;
 
-        log(`Token generated for user "${userId}" (issuer: ${issuer})`, 'success');
+        log(`Token generated for issuer ID "${issuerId}" (issuer: ${issuer})`, 'success');
       } catch (err) {
         log(`Failed to generate token: ${err.message}`, 'error');
       }

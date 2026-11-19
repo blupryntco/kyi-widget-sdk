@@ -8,9 +8,30 @@ type KYIMode = 'modal' | 'drawer';
  */
 type KYIScope = 'kyi' | 'asset-list' | 'wallet-list';
 /**
+ * The asset to open the widget for. Used to prefill and focus the flow, not as proof of ownership.
+ */
+interface KYIAsset {
+  /**
+   * Display name of the asset
+   */
+  name?: string;
+  /**
+   * Deployment address of the asset
+   */
+  address?: string;
+  /**
+   * CAIP-10 account ID of the deployment, e.g. `eip155:1:0x…`
+   */
+  accountId?: string;
+}
+/**
  * Configuration options for the KYI widget
  */
 interface KYIOptions {
+  /**
+   * The asset to open the widget for
+   */
+  asset?: KYIAsset;
   /**
    * Called when the widget is closed (modal/drawer only)
    */
@@ -50,11 +71,16 @@ interface GenerateTokenOptions {
    */
   secretKey: string;
   /**
-   * The internal user ID (partner's own user identifier)
+   * Your internal ID for the issuer. An issuer is whatever your platform treats it as:
+   * an organization (shared by all of its users) or a single user.
    */
-  userId: string;
+  issuerId?: string;
   /**
-   * Token expiration time in seconds (default: 3600 = 1 hour)
+   * @deprecated Use `issuerId` instead.
+   */
+  userId?: string;
+  /**
+   * Token expiration time in seconds (default and maximum: 3600 = 1 hour). Larger values are capped.
    */
   expiresIn?: number;
 }
@@ -67,9 +93,13 @@ interface CheckStatusOptions {
    */
   secretKey: string;
   /**
-   * The internal user ID to check status for
+   * Your internal ID for the issuer to check status for
    */
-  userId: string;
+  issuerId?: string;
+  /**
+   * @deprecated Use `issuerId` instead.
+   */
+  userId?: string;
 }
 /**
  * Asset verification status
@@ -117,5 +147,5 @@ interface KYIStatus {
 /**
  * Internal message types for iframe communication
  */
-export { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget };
-//# sourceMappingURL=types-Bbuxb5v8.d.ts.map
+export { AssetVerification, CheckStatusOptions, GenerateTokenOptions, KYIAsset, KYIMode, KYIOptions, KYIScope, KYIStatus, KYIWidget };
+//# sourceMappingURL=types-DYomDTud.d.ts.map

@@ -12,6 +12,7 @@ export type {
   KYIMode,
   KYIScope,
   KYIOptions,
+  KYIAsset,
   KYIWidget,
   KYIStatus,
   AssetVerification,

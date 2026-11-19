@@ -1,6 +1,9 @@
 import { SignJWT } from 'jose'
 import type { GenerateTokenOptions } from './types'
 
+const MAX_EXPIRES_IN = 3600
+const TOKEN_AUDIENCE = 'bluprynt-widget'
+
 /**
  * Generate a JWT access token for the KYI widget
  *
@@ -18,7 +21,7 @@ import type { GenerateTokenOptions } from './types'
  * const token = await generateToken({
  *   issuer: 'your-partner-id',
  *   secretKey: process.env.BLUPRYNT_SECRET_KEY,
- *   userId: 'user-123',
+ *   issuerId: 'org-123',
  *   expiresIn: 3600, // 1 hour (optional)
  * });
  *
@@ -27,7 +30,8 @@ import type { GenerateTokenOptions } from './types'
  * ```
  */
 export async function generateToken(options: GenerateTokenOptions): Promise<string> {
-  const { issuer, secretKey, userId, expiresIn = 3600 } = options
+  const { issuer, secretKey, expiresIn = MAX_EXPIRES_IN } = options
+  const issuerId = options.issuerId ?? options.userId
 
   if (!issuer) {
     throw new Error('Issuer is required')
@@ -35,17 +39,23 @@ export async function generateToken(options: GenerateTokenOptions): Promise<stri
   if (!secretKey) {
     throw new Error('Secret key is required')
   }
-  if (!userId) {
-    throw new Error('User ID is required')
+  if (!issuerId) {
+    throw new Error('Issuer ID is required')
   }
+  const lifetime = Math.min(Math.floor(expiresIn), MAX_EXPIRES_IN)
+  if (!(lifetime >= 1)) {
+    throw new Error('expiresIn must be at least 1 second')
+  }
+  const now = Math.floor(Date.now() / 1000)
 
   const secret = new TextEncoder().encode(secretKey)
 
-  const token = await new SignJWT({ sub: userId })
+  const token = await new SignJWT({ sub: issuerId, issuer_id: issuerId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuer(issuer)
-    .setIssuedAt()
-    .setExpirationTime(`${expiresIn}s`)
+    .setAudience(TOKEN_AUDIENCE)
+    .setIssuedAt(now)
+    .setExpirationTime(now + lifetime)
     .sign(secret)
 
   return token
