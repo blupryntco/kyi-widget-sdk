@@ -1,5 +1,19 @@
 # @bluprynt/kyi-widget-sdk
 
+## 0.2.0
+
+### Minor Changes
+
+- bf64c87: Add `issuerId` to `generateToken` and `checkStatus`. An issuer can be an organization (shared across its users) or a single user. `userId` is deprecated but still accepted. Tokens now carry an `issuer_id` claim alongside `sub`.
+- c89c9ab: Add an `asset` option to `kyi()` to open the widget for a specific asset. Pass its `name`, `address` or CAIP-10 `accountId`, and the widget prefills the flow and shows that asset's verification state.
+
+### Patch Changes
+
+- 30aa567: Only accept widget messages from the exact Bluprynt app origin, and set `referrerpolicy="no-referrer"` on the widget iframe so the partner page's URL is never sent to the widget.
+- 750ef55: Fix the `repository`, `homepage` and `bugs` URLs in `package.json` to point to the `blupryntco` GitHub org.
+- ec1f321: `generateToken` now caps `expiresIn` at one hour (the existing default), rounds it down to whole seconds, throws if it is under 1 second, and adds an `aud: "bluprynt-widget"` claim to the token.
+- b0581dd: The access token is no longer put in the widget iframe's URL. The SDK sends it to the widget with `postMessage`, only to the Bluprynt app origin, when the widget reports it is ready. This keeps the token out of server logs and `iframe.src`.
+
 ## 0.1.1
 
 ### Patch Changes
